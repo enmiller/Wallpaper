@@ -293,23 +293,27 @@ public extension Wallpaper {
 public extension Wallpaper {
     
     public class func placeRandomPhoneNumber() -> String {
-        return ""
+        return "(\(arc4random_uniform(000))) \(arc4random_uniform(999))-\(arc4random_uniform(9999))"
     }
     
-    public class func placeRandomInteger(lessThan: Int) -> Int {
-        return 1
+    public class func placeRandomInteger(lessThan: UInt32) -> Int {
+        return Int(arc4random_uniform(lessThan))
+    }
+
+    public class func placeRandomFloat(lessThan: UInt32) -> CGFloat {
+        return (CGFloat(arc4random_uniform(lessThan)) + placeRandomPercentage())
     }
     
     public class func placeRandomFloat(range: NSRange) -> CGFloat {
-        return 0.0
+        return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) + placeRandomPercentage())
     }
     
     public class func placeRandomPercentage() -> CGFloat {
-        return 0.0
+        return (CGFloat(arc4random_uniform(100)) / 100.0)
     }
     
     public class func placeRandomPercentage(range: NSRange) -> CGFloat {
-        return 0.0
+        return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) / 100.0)
     }
 }
 
@@ -317,19 +321,40 @@ public extension Wallpaper {
 public extension Wallpaper {
     
     public class func placeRandomSize(dimensionRange: NSRange) -> CGSize {
-        return CGSizeZero
+        return placeRandomSize(xRange: dimensionRange, yRange: dimensionRange)
     }
     
-    public class func placeRandomSize(xRange: NSRange, yRange: NSRange) -> CGSize {
-        return CGSizeZero
+    public class func placeRandomSize(#xRange: NSRange, yRange: NSRange) -> CGSize {
+        let width = round(placeRandomFloat(xRange))
+        let height = round(placeRandomFloat(yRange))
+        return CGSizeMake(width, height)
     }
     
-    public class func placeRandomRect(withinRect: CGRect) -> CGRect {
-        return CGRectZero
+    public class func placeRandomRect(withinRect rect: CGRect) -> CGRect {
+        let minX = CGRectGetMinX(rect)
+        let maxX = CGRectGetMaxX(rect)
+        let minY = CGRectGetMinY(rect)
+        let maxY = CGRectGetMaxY(rect)
+        let maxWidth = CGRectGetWidth(rect)
+        let maxHeight = CGRectGetHeight(rect)
+        
+        let rectSize = placeRandomSize(xRange: NSMakeRange(0, Int(maxWidth)), yRange: NSMakeRange(0, Int(maxHeight)))
+        let xOrigin = placeRandomFloat(NSMakeRange(Int(minX), Int(maxX - rectSize.width)))
+        let yOrigin = placeRandomFloat(NSMakeRange(Int(minY), Int(maxY - rectSize.height)))
+
+        return CGRectMake(xOrigin, yOrigin, rectSize.width, rectSize.height)
     }
     
-    public class func placeRandomPoint(withinRect: CGRect) -> CGPoint {
-        return CGPointZero
+    public class func placeRandomPoint(withinRect rect: CGRect) -> CGPoint {
+        let minX = CGRectGetMinX(rect)
+        let maxX = CGRectGetMaxX(rect)
+        let minY = CGRectGetMinY(rect)
+        let maxY = CGRectGetMaxY(rect)
+        
+        let xOrigin = placeRandomFloat(NSMakeRange(Int(minX), Int(maxX)))
+        let yOrigin = placeRandomFloat(NSMakeRange(Int(minY), Int(maxY)))
+        
+        return CGPointMake(xOrigin, yOrigin)
     }
 }
 
