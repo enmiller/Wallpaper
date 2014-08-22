@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>050E1F78-1B7A-41AC-AA2D-9C212D2CCE0E</string>
+	<key>IDESourceControlProjectName</key>
+	<string>Wallpaper-Demo</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>149E6B892E13300355C72C3BFA9F33A397FD8FEC</key>
+		<string>github.com:enmiller/Wallpaper.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>Wallpaper-Demo/Wallpaper-Demo.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>149E6B892E13300355C72C3BFA9F33A397FD8FEC</key>
+		<string>../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:enmiller/Wallpaper.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>149E6B892E13300355C72C3BFA9F33A397FD8FEC</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>149E6B892E13300355C72C3BFA9F33A397FD8FEC</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Wallpaper</string>
+		</dict>
+	</array>
+</dict>
+</plist>
