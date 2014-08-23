@@ -281,15 +281,16 @@ public extension Wallpaper {
     }
 
     public class func placeRandomLastName() -> String {
-        return ""
+        let names = lastNames()
+        return names[arc4random_uniform(names.count)]
     }
     
     public class func placeRandomFullName() -> String {
-        return ""
+        return "\(placeRandomFirstName()) \(placeRandomLastName())"
     }
     
     public class func placeRandomBusinessName(numberOfWords: UInt) -> String {
-        return ""
+        return "Not Yet Implemented"
     }
 }
 
