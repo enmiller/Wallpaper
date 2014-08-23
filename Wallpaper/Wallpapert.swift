@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-public enum WPTextParagraphLength: UInt {
+public enum WPTextParagraphLength: Int {
     case VeryShort = 0
     case Short = 1
     case Medium = 2
@@ -191,7 +191,7 @@ public extension Wallpaper {
 public extension Wallpaper {
     
     public class func placeText(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, textOptions: WPTextOptions, completion: (placeText: String?) -> ()) {
-        assert(numberOfParagraphs > 0, "Number of paragraphs is invalid \(numberOfParagraphs)")
+        assert(numberOfParagraphs > 0, "Number of paragraphs is invalid")
         
         var urlString = kWPPlaceRandomTextURLString
         if (textOptions & WPTextOptions.AllCaps) {
@@ -273,9 +273,13 @@ public extension Wallpaper {
 public extension Wallpaper {
     
     public class func placeRandomFirstName() -> String {
-        return ""
+        let males = maleFirstNames()
+        let females = femaleFirstNames()
+        let names: NSArray = males.arrayByAddingObjectsFromArray(females)
+        
+        return  names[arc4random_uniform(names.count)]
     }
-    
+
     public class func placeRandomLastName() -> String {
         return ""
     }
@@ -405,5 +409,64 @@ public extension Wallpaper {
         var hue: CGFloat = 0.0
         color.getHue(&hue, saturation: nil, brightness: nil, alpha: nil)
         return placeRandomColorWithHue(hue)
+    }
+}
+
+//MARK: - Private Data Helpers
+private extension Wallpaper {
+
+    class func femaleFirstNames() -> NSArray {
+        return ["Malinda", "Kaye", "Audra", "Trudie", "Stacee", "Esta", "Albertina", "Nakia",
+                "Bettye", "Remona", "Kimberli", "Clarinda", "Gussie", "Carmina", "Alia", "Shaquita",
+                "Rosalee", "Nicki", "Tamica", "Tressa", "Yvette", "Shantae", "Trena", "Abbie",
+                "Isabella", "Fiona", "Alejandrina", "Hyo", "Marvis", "Alexandra", "Torri", "Gemma"]
+    }
+
+    class func maleFirstNames() -> NSArray {
+        return ["Phillip", "Gene", "Trenton", "Darwin", "Darrin", "Herman", "Cody", "Maximo",
+                "Gabriel", "Noble", "Adan", "Dale", "Ali", "Laurence", "Paris", "Orval", "Randy",
+                "Ed", "Alonzo", "Margarito", "Leonard", "Houston", "Zackary", "Darnell", "Whitney",
+                "Samuel", "Claud", "Derick", "Teddy", "Rigoberto", "Leonardo", "Clay", "Lyman"]
+    }
+
+    class func lastNames() -> NSArray {
+        return ["Mclawhorn", "Lyvers", "Deborde", "Scarberry", "Swearingen", "Mccampbell", "Strum",
+                "Banuelos", "Parrish", "Bueno", "Wegener", "Vieira", "Plantz", "Mcquaid", "Bruckner",
+                "Orchard", "Wall", "Gerth", "Schweiger", "Minder", "Correa", "Cremer", "Close",
+                "Zink", "Victorian", "Bickle", "Vanorden", "Lauro", "Whitsitt", "Dubose", "Nowell"]
+    }
+
+    class func businessNameSingleWordPrefix() -> NSArray {
+        return ["Micro", "Star", "Wal", "Du", "Goo", "Citi", "Cono", "Kro", "Proc", "Boe", "Com",
+                "Sys", "Super", "Aet", "All", "Nation"]
+    }
+
+    class func businessNameSingleWordSuffix() -> NSArray {
+        return ["get", "bucks", "pont", "gle", "co", "ger", "ter", "thon", "soft", "get", "ing",
+                "cast", "a", "well", "na", "state", "r"]
+    }
+
+    class func businessPreFixes() -> NSArray {
+        return ["News", "Home", "World", "General", "Giant", "Big", "Honey", "Delta", "Southwest",
+                "Dr.", "Citi", "Wells", "Jamba", "Cost", "Green"]
+    }
+
+    class func businessMiddleParts() -> NSArray {
+        return ["Depot", "Juice", "Bucks", "Market", "Air", "Commercial", "Fuel", "Motor",
+                "Electric", "Mae", "Fruit"]
+    }
+
+    class func businessSuffixes() -> NSArray {
+        return ["Motors", "Builders", "Works", "Technologies", "Institute", "Labs", "Communications",
+                "Electric", "Co-Op", "Holdings", "Systems", "International", "Mobile", "Bank",
+                "Electric"]
+    }
+
+    class func businessCorporateMonickers() -> NSArray {
+        return [", Inc", " Incorporated", ", LLC", ", PC", " Group"]
+    }
+
+    class func businessDomains() -> NSArray {
+        return [".com", ".net"]
     }
 }
