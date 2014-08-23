@@ -362,34 +362,48 @@ public extension Wallpaper {
 public extension Wallpaper {
     
     public class func placeRandomColorWithHue(hue: CGFloat) -> UIColor {
-        return UIColor.whiteColor()
+        assert(hue <= 1 && hue >= 0, "Hue value must be between 0 and 1")
+
+        let s = placeRandomPercentage(NSMakeRange(10, 90))
+        let b = placeRandomPercentage(NSMakeRange(10, 90))
+    
+        return UIColor(hue: hue, saturation: s, brightness: b, alpha: 1.0)
     }
     
     public class func placeRandomColor() -> UIColor {
-        return UIColor.whiteColor()
+        return placeRandomColorWithAlpha(1.0)
     }
     
     public class func placeRandomColorWithAlpha(alpha: CGFloat) -> UIColor {
-        return UIColor.whiteColor()
+        let r = placeRandomPercentage()
+        let g = placeRandomPercentage()
+        let b = placeRandomPercentage()
+
+        return UIColor(red: r, green: g, blue: b, alpha: 1.0)
     }
     
     public class func placeRandomColorWithRandomAlpha() -> UIColor {
-        return UIColor.whiteColor()
+        let alpha = max(placeRandomPercentage(), 0.1)
+        return placeRandomColorWithAlpha(alpha)
     }
     
     public class func placeRandomGreyscaleColor() -> UIColor {
-        return UIColor.whiteColor()
+        return placeRandomGreyscaleColor(1.0)
     }
     
-    public class func placeRandomGreyscale(alpha: CGFloat) -> UIColor {
-        return UIColor.whiteColor()
+    public class func placeRandomGreyscaleColor(alpha: CGFloat) -> UIColor {
+        let greyness = min(max(placeRandomPercentage(), 0.1), 0.95)
+        return UIColor(white: greyness, alpha: alpha)
     }
     
     public class func placeRandomGreyscaleColorWithRandomAlpha() -> UIColor {
-        return UIColor.whiteColor()
+        let alpha = max(placeRandomPercentage(), 0.1)
+        return placeRandomGreyscaleColor(alpha)
     }
     
     public class func placeRandomColorWithHueOfColor(color: UIColor) -> UIColor {
-        return UIColor.whiteColor()
+        var hue: CGFloat = 0.0
+        color.getHue(&hue, saturation: nil, brightness: nil, alpha: nil)
+        return placeRandomColorWithHue(hue)
     }
 }
