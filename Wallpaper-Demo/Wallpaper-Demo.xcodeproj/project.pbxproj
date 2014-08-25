@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7B227D3A19ABBB0500BD4CF8 /* WPFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B227D3919ABBB0500BD4CF8 /* WPFirstViewController.swift */; };
+		7B227D3C19ABBB4900BD4CF8 /* WPSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B227D3B19ABBB4900BD4CF8 /* WPSecondViewController.swift */; };
+		7B227D3E19ABBECF00BD4CF8 /* WPCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B227D3D19ABBECF00BD4CF8 /* WPCollectionViewCell.swift */; };
 		7B37ED8A19A7FAB70082E720 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37ED8919A7FAB70082E720 /* AppDelegate.swift */; };
-		7B37ED8C19A7FAB70082E720 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37ED8B19A7FAB70082E720 /* ViewController.swift */; };
 		7B37ED9119A7FAB70082E720 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B37ED9019A7FAB70082E720 /* Images.xcassets */; };
 		7B37ED9D19A7FAB70082E720 /* Wallpaper_DemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37ED9C19A7FAB70082E720 /* Wallpaper_DemoTests.swift */; };
 		7B37EDAB19A7FB260082E720 /* Wallpapert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37EDAA19A7FB260082E720 /* Wallpapert.swift */; };
@@ -25,10 +27,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7B227D3919ABBB0500BD4CF8 /* WPFirstViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPFirstViewController.swift; sourceTree = "<group>"; };
+		7B227D3B19ABBB4900BD4CF8 /* WPSecondViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPSecondViewController.swift; sourceTree = "<group>"; };
+		7B227D3D19ABBECF00BD4CF8 /* WPCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPCollectionViewCell.swift; sourceTree = "<group>"; };
 		7B37ED8419A7FAB70082E720 /* Wallpaper-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Wallpaper-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B37ED8819A7FAB70082E720 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7B37ED8919A7FAB70082E720 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		7B37ED8B19A7FAB70082E720 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		7B37ED9019A7FAB70082E720 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		7B37ED9619A7FAB70082E720 /* Wallpaper-DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Wallpaper-DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B37ED9B19A7FAB70082E720 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -78,7 +82,9 @@
 			isa = PBXGroup;
 			children = (
 				7B37ED8919A7FAB70082E720 /* AppDelegate.swift */,
-				7B37ED8B19A7FAB70082E720 /* ViewController.swift */,
+				7B227D3919ABBB0500BD4CF8 /* WPFirstViewController.swift */,
+				7B227D3B19ABBB4900BD4CF8 /* WPSecondViewController.swift */,
+				7B227D3D19ABBECF00BD4CF8 /* WPCollectionViewCell.swift */,
 			);
 			path = "Wallpaper-Demo";
 			sourceTree = "<group>";
@@ -217,7 +223,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B37ED8C19A7FAB70082E720 /* ViewController.swift in Sources */,
+				7B227D3C19ABBB4900BD4CF8 /* WPSecondViewController.swift in Sources */,
+				7B227D3E19ABBECF00BD4CF8 /* WPCollectionViewCell.swift in Sources */,
+				7B227D3A19ABBB0500BD4CF8 /* WPFirstViewController.swift in Sources */,
 				7B37EDAB19A7FB260082E720 /* Wallpapert.swift in Sources */,
 				7B37ED8A19A7FAB70082E720 /* AppDelegate.swift in Sources */,
 			);

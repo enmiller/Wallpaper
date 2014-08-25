@@ -12,15 +12,20 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
                             
     var window: UIWindow?
-    var rootController: ViewController?
+    var tabBarController: UITabBarController?
     
     
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: NSDictionary?) -> Bool {
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
-        rootController = ViewController()
-        self.window!.rootViewController = rootController
-        self.window!.makeKeyAndVisible()
         
+        
+        var firstVC = WPFirstViewController()
+        var secondVC = WPSecondViewController()
+        tabBarController = UITabBarController()
+        tabBarController!.viewControllers = [firstVC, secondVC]
+        self.window!.rootViewController = tabBarController
+        
+        self.window!.makeKeyAndVisible()
         return true
     }
 }
