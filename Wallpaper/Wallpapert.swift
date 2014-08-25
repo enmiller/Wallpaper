@@ -269,100 +269,6 @@ public extension Wallpaper {
     }
 }
 
-//MARK: - Data
-//public extension Wallpaper {
-//
-//    public class func placeRandomFirstName() -> String {
-//        let males = maleFirstNames()
-//        let females = femaleFirstNames()
-//        let names: NSArray = males.arrayByAddingObjectsFromArray(females)
-//
-//        return  names[arc4random_uniform(names.count)]
-//    }
-//
-//    public class func placeRandomLastName() -> String {
-//        let names = lastNames()
-//        return names[arc4random_uniform(names.count)]
-//    }
-//
-//    public class func placeRandomFullName() -> String {
-//        return "\(placeRandomFirstName()) \(placeRandomLastName())"
-//    }
-//
-//    public class func placeRandomBusinessName(numberOfWords: UInt) -> String {
-//        return "Not Yet Implemented"
-//    }
-//}
-
-//MARK: - Random Numbers
-public extension Wallpaper {
-
-    public class func placeRandomPhoneNumber() -> String {
-        return "(\(arc4random_uniform(000))) \(arc4random_uniform(999))-\(arc4random_uniform(9999))"
-    }
-
-    public class func placeRandomInteger(lessThan: UInt32) -> Int {
-        return Int(arc4random_uniform(lessThan))
-    }
-
-    public class func placeRandomFloat(lessThan: UInt32) -> CGFloat {
-        return (CGFloat(arc4random_uniform(lessThan)) + placeRandomPercentage())
-    }
-
-    public class func placeRandomFloat(range: NSRange) -> CGFloat {
-        return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) + placeRandomPercentage())
-    }
-
-    public class func placeRandomPercentage() -> CGFloat {
-        return (CGFloat(arc4random_uniform(100)) / 100.0)
-    }
-
-    public class func placeRandomPercentage(range: NSRange) -> CGFloat {
-        return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) / 100.0)
-    }
-}
-
-//MARK: - Geometry
-public extension Wallpaper {
-
-    public class func placeRandomSize(dimensionRange: NSRange) -> CGSize {
-        return placeRandomSize(xRange: dimensionRange, yRange: dimensionRange)
-    }
-
-    public class func placeRandomSize(#xRange: NSRange, yRange: NSRange) -> CGSize {
-        let width = round(placeRandomFloat(xRange))
-        let height = round(placeRandomFloat(yRange))
-        return CGSizeMake(width, height)
-    }
-
-    public class func placeRandomRect(withinRect rect: CGRect) -> CGRect {
-        let minX = CGRectGetMinX(rect)
-        let maxX = CGRectGetMaxX(rect)
-        let minY = CGRectGetMinY(rect)
-        let maxY = CGRectGetMaxY(rect)
-        let maxWidth = CGRectGetWidth(rect)
-        let maxHeight = CGRectGetHeight(rect)
-
-        let rectSize = placeRandomSize(xRange: NSMakeRange(0, Int(maxWidth)), yRange: NSMakeRange(0, Int(maxHeight)))
-        let xOrigin = placeRandomFloat(NSMakeRange(Int(minX), Int(maxX - rectSize.width)))
-        let yOrigin = placeRandomFloat(NSMakeRange(Int(minY), Int(maxY - rectSize.height)))
-
-        return CGRectMake(xOrigin, yOrigin, rectSize.width, rectSize.height)
-    }
-
-    public class func placeRandomPoint(withinRect rect: CGRect) -> CGPoint {
-        let minX = CGRectGetMinX(rect)
-        let maxX = CGRectGetMaxX(rect)
-        let minY = CGRectGetMinY(rect)
-        let maxY = CGRectGetMaxY(rect)
-
-        let xOrigin = placeRandomFloat(NSMakeRange(Int(minX), Int(maxX)))
-        let yOrigin = placeRandomFloat(NSMakeRange(Int(minY), Int(maxY)))
-
-        return CGPointMake(xOrigin, yOrigin)
-    }
-}
-
 //MARK: - Colors
 public extension Wallpaper {
 
@@ -413,61 +319,30 @@ public extension Wallpaper {
     }
 }
 
-//MARK: - Private Data Helpers
-//private extension Wallpaper {
-//
-//    class func femaleFirstNames() -> NSArray {
-//        return ["Malinda", "Kaye", "Audra", "Trudie", "Stacee", "Esta", "Albertina", "Nakia",
-//                "Bettye", "Remona", "Kimberli", "Clarinda", "Gussie", "Carmina", "Alia", "Shaquita",
-//                "Rosalee", "Nicki", "Tamica", "Tressa", "Yvette", "Shantae", "Trena", "Abbie",
-//                "Isabella", "Fiona", "Alejandrina", "Hyo", "Marvis", "Alexandra", "Torri", "Gemma"]
-//    }
-//
-//    class func maleFirstNames() -> NSArray {
-//        return ["Phillip", "Gene", "Trenton", "Darwin", "Darrin", "Herman", "Cody", "Maximo",
-//                "Gabriel", "Noble", "Adan", "Dale", "Ali", "Laurence", "Paris", "Orval", "Randy",
-//                "Ed", "Alonzo", "Margarito", "Leonard", "Houston", "Zackary", "Darnell", "Whitney",
-//                "Samuel", "Claud", "Derick", "Teddy", "Rigoberto", "Leonardo", "Clay", "Lyman"]
-//    }
-//
-//    class func lastNames() -> NSArray {
-//        return ["Mclawhorn", "Lyvers", "Deborde", "Scarberry", "Swearingen", "Mccampbell", "Strum",
-//                "Banuelos", "Parrish", "Bueno", "Wegener", "Vieira", "Plantz", "Mcquaid", "Bruckner",
-//                "Orchard", "Wall", "Gerth", "Schweiger", "Minder", "Correa", "Cremer", "Close",
-//                "Zink", "Victorian", "Bickle", "Vanorden", "Lauro", "Whitsitt", "Dubose", "Nowell"]
-//    }
-//
-//    class func businessNameSingleWordPrefix() -> NSArray {
-//        return ["Micro", "Star", "Wal", "Du", "Goo", "Citi", "Cono", "Kro", "Proc", "Boe", "Com",
-//                "Sys", "Super", "Aet", "All", "Nation"]
-//    }
-//
-//    class func businessNameSingleWordSuffix() -> NSArray {
-//        return ["get", "bucks", "pont", "gle", "co", "ger", "ter", "thon", "soft", "get", "ing",
-//                "cast", "a", "well", "na", "state", "r"]
-//    }
-//
-//    class func businessPreFixes() -> NSArray {
-//        return ["News", "Home", "World", "General", "Giant", "Big", "Honey", "Delta", "Southwest",
-//                "Dr.", "Citi", "Wells", "Jamba", "Cost", "Green"]
-//    }
-//
-//    class func businessMiddleParts() -> NSArray {
-//        return ["Depot", "Juice", "Bucks", "Market", "Air", "Commercial", "Fuel", "Motor",
-//                "Electric", "Mae", "Fruit"]
-//    }
-//
-//    class func businessSuffixes() -> NSArray {
-//        return ["Motors", "Builders", "Works", "Technologies", "Institute", "Labs", "Communications",
-//                "Electric", "Co-Op", "Holdings", "Systems", "International", "Mobile", "Bank",
-//                "Electric"]
-//    }
-//
-//    class func businessCorporateMonickers() -> NSArray {
-//        return [", Inc", " Incorporated", ", LLC", ", PC", " Group"]
-//    }
-//
-//    class func businessDomains() -> NSArray {
-//        return [".com", ".net"]
-//    }
-//}
+//MARK: - Private Random Number Helpers
+private extension Wallpaper {
+
+    private class func placeRandomPhoneNumber() -> String {
+        return "(\(arc4random_uniform(000))) \(arc4random_uniform(999))-\(arc4random_uniform(9999))"
+    }
+
+    private class func placeRandomInteger(lessThan: UInt32) -> Int {
+        return Int(arc4random_uniform(lessThan))
+    }
+
+    private class func placeRandomFloat(lessThan: UInt32) -> CGFloat {
+        return (CGFloat(arc4random_uniform(lessThan)) + placeRandomPercentage())
+    }
+
+    private class func placeRandomFloat(range: NSRange) -> CGFloat {
+        return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) + placeRandomPercentage())
+    }
+
+    private class func placeRandomPercentage() -> CGFloat {
+        return (CGFloat(arc4random_uniform(100)) / 100.0)
+    }
+
+    private class func placeRandomPercentage(range: NSRange) -> CGFloat {
+        return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) / 100.0)
+    }
+}
