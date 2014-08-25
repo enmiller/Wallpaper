@@ -275,8 +275,8 @@ public extension Wallpaper {
     public class func placeRandomColorWithHue(hue: CGFloat) -> UIColor {
         assert(hue <= 1 && hue >= 0, "Hue value must be between 0 and 1")
 
-        let s = placeRandomPercentage(NSMakeRange(10, 90))
-        let b = placeRandomPercentage(NSMakeRange(10, 90))
+        let s = randomPercentage(NSMakeRange(10, 90))
+        let b = randomPercentage(NSMakeRange(10, 90))
 
         return UIColor(hue: hue, saturation: s, brightness: b, alpha: 1.0)
     }
@@ -286,15 +286,15 @@ public extension Wallpaper {
     }
 
     public class func placeRandomColorWithAlpha(alpha: CGFloat) -> UIColor {
-        let r = placeRandomPercentage()
-        let g = placeRandomPercentage()
-        let b = placeRandomPercentage()
+        let r = randomPercentage()
+        let g = randomPercentage()
+        let b = randomPercentage()
 
         return UIColor(red: r, green: g, blue: b, alpha: 1.0)
     }
 
     public class func placeRandomColorWithRandomAlpha() -> UIColor {
-        let alpha = max(placeRandomPercentage(), 0.1)
+        let alpha = max(randomPercentage(), 0.1)
         return placeRandomColorWithAlpha(alpha)
     }
 
@@ -303,12 +303,12 @@ public extension Wallpaper {
     }
 
     public class func placeRandomGreyscaleColor(alpha: CGFloat) -> UIColor {
-        let greyness = min(max(placeRandomPercentage(), 0.1), 0.95)
+        let greyness = min(max(randomPercentage(), 0.1), 0.95)
         return UIColor(white: greyness, alpha: alpha)
     }
 
     public class func placeRandomGreyscaleColorWithRandomAlpha() -> UIColor {
-        let alpha = max(placeRandomPercentage(), 0.1)
+        let alpha = max(randomPercentage(), 0.1)
         return placeRandomGreyscaleColor(alpha)
     }
 
@@ -322,27 +322,27 @@ public extension Wallpaper {
 //MARK: - Private Random Number Helpers
 private extension Wallpaper {
 
-    private class func placeRandomPhoneNumber() -> String {
+    private class func randomPhoneNumber() -> String {
         return "(\(arc4random_uniform(000))) \(arc4random_uniform(999))-\(arc4random_uniform(9999))"
     }
 
-    private class func placeRandomInteger(lessThan: UInt32) -> Int {
+    private class func randomInteger(lessThan: UInt32) -> Int {
         return Int(arc4random_uniform(lessThan))
     }
 
-    private class func placeRandomFloat(lessThan: UInt32) -> CGFloat {
-        return (CGFloat(arc4random_uniform(lessThan)) + placeRandomPercentage())
+    private class func randomFloat(lessThan: UInt32) -> CGFloat {
+        return (CGFloat(arc4random_uniform(lessThan)) + randomPercentage())
     }
 
-    private class func placeRandomFloat(range: NSRange) -> CGFloat {
-        return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) + placeRandomPercentage())
+    private class func randomFloat(range: NSRange) -> CGFloat {
+        return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) + randomPercentage())
     }
 
-    private class func placeRandomPercentage() -> CGFloat {
+    private class func randomPercentage() -> CGFloat {
         return (CGFloat(arc4random_uniform(100)) / 100.0)
     }
 
-    private class func placeRandomPercentage(range: NSRange) -> CGFloat {
+    private class func randomPercentage(range: NSRange) -> CGFloat {
         return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) / 100.0)
     }
 }
