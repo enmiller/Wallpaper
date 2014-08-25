@@ -26,7 +26,7 @@ public struct WPTextOptions : RawOptionSetType, BooleanType {
     public static func fromRaw(raw: UInt) -> WPTextOptions? { return self(raw) }
     public static func fromMask(raw: UInt) -> WPTextOptions { return self(raw) }
     public static func convertFromNilLiteral() -> WPTextOptions { return self(0) }
- 
+
     static var None: WPTextOptions { return self(0) }
     static var AllCaps: WPTextOptions { return self(1 << 0) }
     static var Prude: WPTextOptions { return self(1 << 1) }
@@ -41,7 +41,7 @@ public struct WPHTMLOptions : RawOptionSetType, BooleanType {
     public static func fromRaw(raw: UInt) -> WPHTMLOptions? { return self(raw) }
     public static func fromMask(raw: UInt) -> WPHTMLOptions { return self(raw) }
     public static func convertFromNilLiteral() -> WPHTMLOptions { return self(0) }
- 
+
     static var None:             WPHTMLOptions { return self(0) }
     static var EmphasisTags:     WPHTMLOptions { return self(1 << 0) }
     static var AnchorTags:       WPHTMLOptions { return self(1 << 1) }
@@ -65,10 +65,10 @@ public let kWPPlaceRandomTextURLString = "http://loripsum.net/api/"
 public let kWPPlaceRandomDowneyImageURLString = "http://rdjpg.com/%@/%@/"
 
 public class Wallpaper: NSObject {
-    
+
     private class func requestImage(path: String, size: CGSize, completion: (image: UIImage?) -> ()) {
         let screenScale: CGFloat = UIScreen.mainScreen().scale
-        
+
         let urlString = NSString(format: path, "\(Int(size.width * screenScale))", "\(Int(size.height * screenScale))")
         let url = NSURL(string: urlString)
         let request = NSURLRequest(URL: url)
@@ -146,41 +146,41 @@ public class Wallpaper: NSObject {
 
 //MARK: - Images
 public extension Wallpaper {
-    
+
     public class func placeKittenImage(size: CGSize, completion: (image: UIImage?) -> ()) {
         requestImage(kWPPlaceKittenImageURLString, size: size, completion: completion)
     }
-    
+
     public class func placeKittenGreyscaleImage(size: CGSize, completion: (image: UIImage?) -> ()) {
         requestImage(kWPPlaceKittenGreyscaleImageURLString, size: size, completion: completion)
     }
-    
+
     public class func placeBaconImage(size: CGSize, completion: (image: UIImage?) -> ()) {
         requestImage(kWPPlaceBaconImageURLString, size: size, completion: completion)
     }
-    
+
     public class func placeHolderImage(size: CGSize, completion: (image: UIImage?) -> ()) {
         requestImage(kWPPlaceHolderImageURLString, size: size, completion: completion)
     }
-    
+
     public class func placeRandomImage(size: CGSize, category: String, completion: (image: UIImage?) -> ()) {
         let path = kWPPlaceRandomImageURLString.stringByAppendingPathComponent(category)
         requestImage(path, size: size, completion: completion)
     }
-    
+
     public class func placeRandomGreyscaleImage(size: CGSize, category: String, completion: (image: UIImage?) -> ()) {
         let path = kWPPlaceRandomGreyscaleImageURLString.stringByAppendingPathComponent(category)
         requestImage(path, size: size, completion: completion)
     }
-    
+
     public class func placeRandomImage(size: CGSize, completion: (image: UIImage?) -> ()) {
         requestImage(kWPPlaceRandomImageURLString, size: size, completion: completion)
     }
-    
+
     public class func placeRandomGreyscaleImage(size: CGSize, completion: (image: UIImage?) -> ()) {
         requestImage(kWPPlaceRandomGreyscaleImageURLString, size: size, completion: completion)
     }
-    
+
     public class func placeDowneyImage(size: CGSize, completion: (image: UIImage?) -> ()) {
         requestImage(kWPPlaceRandomDowneyImageURLString, size: size, completion: completion)
     }
@@ -189,10 +189,10 @@ public extension Wallpaper {
 
 //MARK: - Text
 public extension Wallpaper {
-    
+
     public class func placeText(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, textOptions: WPTextOptions, completion: (placeText: String?) -> ()) {
         assert(numberOfParagraphs > 0, "Number of paragraphs is invalid")
-        
+
         var urlString = kWPPlaceRandomTextURLString
         if (textOptions & WPTextOptions.AllCaps) {
             urlString = urlString.stringByAppendingPathComponent("allcaps")
@@ -220,7 +220,7 @@ public extension Wallpaper {
             }
         }
     }
-    
+
     public class func placeHipsterIpsum(numberOfParagraphs: Int, shotOfLatin: Bool, completion: (hipsterIpsum: String?) -> ()) {
         var hipsterPath: String = "http://hipsterjesus.com/api?paras=\(numberOfParagraphs)&html=false"
         if shotOfLatin {
@@ -242,7 +242,7 @@ public extension Wallpaper {
             }
         }
     }
-    
+
     public class func placeHTML(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, options: WPHTMLOptions, completion: (placeText: String?) -> ()) -> () {
         let htmlURL = placeURLForHTML(numberOfParagraphs, paragraphLength: paragraphLength, htmlOptions: options)
         let request = NSURLRequest(URL: htmlURL)
@@ -256,7 +256,7 @@ public extension Wallpaper {
             }
         }
     }
-    
+
     public class func placeURLForHTML(paragraphs: Int, paragraphLength: WPTextParagraphLength, htmlOptions: WPHTMLOptions) -> NSURL {
         var htmlURLString = kWPPlaceRandomTextURLString
         let optionsString = htmlOptionsString(htmlOptions)
@@ -270,37 +270,37 @@ public extension Wallpaper {
 }
 
 //MARK: - Data
-public extension Wallpaper {
-    
-    public class func placeRandomFirstName() -> String {
-        let males = maleFirstNames()
-        let females = femaleFirstNames()
-        let names: NSArray = males.arrayByAddingObjectsFromArray(females)
-        
-        return  names[arc4random_uniform(names.count)]
-    }
-
-    public class func placeRandomLastName() -> String {
-        let names = lastNames()
-        return names[arc4random_uniform(names.count)]
-    }
-    
-    public class func placeRandomFullName() -> String {
-        return "\(placeRandomFirstName()) \(placeRandomLastName())"
-    }
-    
-    public class func placeRandomBusinessName(numberOfWords: UInt) -> String {
-        return "Not Yet Implemented"
-    }
-}
+//public extension Wallpaper {
+//
+//    public class func placeRandomFirstName() -> String {
+//        let males = maleFirstNames()
+//        let females = femaleFirstNames()
+//        let names: NSArray = males.arrayByAddingObjectsFromArray(females)
+//
+//        return  names[arc4random_uniform(names.count)]
+//    }
+//
+//    public class func placeRandomLastName() -> String {
+//        let names = lastNames()
+//        return names[arc4random_uniform(names.count)]
+//    }
+//
+//    public class func placeRandomFullName() -> String {
+//        return "\(placeRandomFirstName()) \(placeRandomLastName())"
+//    }
+//
+//    public class func placeRandomBusinessName(numberOfWords: UInt) -> String {
+//        return "Not Yet Implemented"
+//    }
+//}
 
 //MARK: - Random Numbers
 public extension Wallpaper {
-    
+
     public class func placeRandomPhoneNumber() -> String {
         return "(\(arc4random_uniform(000))) \(arc4random_uniform(999))-\(arc4random_uniform(9999))"
     }
-    
+
     public class func placeRandomInteger(lessThan: UInt32) -> Int {
         return Int(arc4random_uniform(lessThan))
     }
@@ -308,15 +308,15 @@ public extension Wallpaper {
     public class func placeRandomFloat(lessThan: UInt32) -> CGFloat {
         return (CGFloat(arc4random_uniform(lessThan)) + placeRandomPercentage())
     }
-    
+
     public class func placeRandomFloat(range: NSRange) -> CGFloat {
         return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) + placeRandomPercentage())
     }
-    
+
     public class func placeRandomPercentage() -> CGFloat {
         return (CGFloat(arc4random_uniform(100)) / 100.0)
     }
-    
+
     public class func placeRandomPercentage(range: NSRange) -> CGFloat {
         return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) / 100.0)
     }
@@ -324,17 +324,17 @@ public extension Wallpaper {
 
 //MARK: - Geometry
 public extension Wallpaper {
-    
+
     public class func placeRandomSize(dimensionRange: NSRange) -> CGSize {
         return placeRandomSize(xRange: dimensionRange, yRange: dimensionRange)
     }
-    
+
     public class func placeRandomSize(#xRange: NSRange, yRange: NSRange) -> CGSize {
         let width = round(placeRandomFloat(xRange))
         let height = round(placeRandomFloat(yRange))
         return CGSizeMake(width, height)
     }
-    
+
     public class func placeRandomRect(withinRect rect: CGRect) -> CGRect {
         let minX = CGRectGetMinX(rect)
         let maxX = CGRectGetMaxX(rect)
@@ -342,43 +342,43 @@ public extension Wallpaper {
         let maxY = CGRectGetMaxY(rect)
         let maxWidth = CGRectGetWidth(rect)
         let maxHeight = CGRectGetHeight(rect)
-        
+
         let rectSize = placeRandomSize(xRange: NSMakeRange(0, Int(maxWidth)), yRange: NSMakeRange(0, Int(maxHeight)))
         let xOrigin = placeRandomFloat(NSMakeRange(Int(minX), Int(maxX - rectSize.width)))
         let yOrigin = placeRandomFloat(NSMakeRange(Int(minY), Int(maxY - rectSize.height)))
 
         return CGRectMake(xOrigin, yOrigin, rectSize.width, rectSize.height)
     }
-    
+
     public class func placeRandomPoint(withinRect rect: CGRect) -> CGPoint {
         let minX = CGRectGetMinX(rect)
         let maxX = CGRectGetMaxX(rect)
         let minY = CGRectGetMinY(rect)
         let maxY = CGRectGetMaxY(rect)
-        
+
         let xOrigin = placeRandomFloat(NSMakeRange(Int(minX), Int(maxX)))
         let yOrigin = placeRandomFloat(NSMakeRange(Int(minY), Int(maxY)))
-        
+
         return CGPointMake(xOrigin, yOrigin)
     }
 }
 
 //MARK: - Colors
 public extension Wallpaper {
-    
+
     public class func placeRandomColorWithHue(hue: CGFloat) -> UIColor {
         assert(hue <= 1 && hue >= 0, "Hue value must be between 0 and 1")
 
         let s = placeRandomPercentage(NSMakeRange(10, 90))
         let b = placeRandomPercentage(NSMakeRange(10, 90))
-    
+
         return UIColor(hue: hue, saturation: s, brightness: b, alpha: 1.0)
     }
-    
+
     public class func placeRandomColor() -> UIColor {
         return placeRandomColorWithAlpha(1.0)
     }
-    
+
     public class func placeRandomColorWithAlpha(alpha: CGFloat) -> UIColor {
         let r = placeRandomPercentage()
         let g = placeRandomPercentage()
@@ -386,26 +386,26 @@ public extension Wallpaper {
 
         return UIColor(red: r, green: g, blue: b, alpha: 1.0)
     }
-    
+
     public class func placeRandomColorWithRandomAlpha() -> UIColor {
         let alpha = max(placeRandomPercentage(), 0.1)
         return placeRandomColorWithAlpha(alpha)
     }
-    
+
     public class func placeRandomGreyscaleColor() -> UIColor {
         return placeRandomGreyscaleColor(1.0)
     }
-    
+
     public class func placeRandomGreyscaleColor(alpha: CGFloat) -> UIColor {
         let greyness = min(max(placeRandomPercentage(), 0.1), 0.95)
         return UIColor(white: greyness, alpha: alpha)
     }
-    
+
     public class func placeRandomGreyscaleColorWithRandomAlpha() -> UIColor {
         let alpha = max(placeRandomPercentage(), 0.1)
         return placeRandomGreyscaleColor(alpha)
     }
-    
+
     public class func placeRandomColorWithHueOfColor(color: UIColor) -> UIColor {
         var hue: CGFloat = 0.0
         color.getHue(&hue, saturation: nil, brightness: nil, alpha: nil)
@@ -414,60 +414,60 @@ public extension Wallpaper {
 }
 
 //MARK: - Private Data Helpers
-private extension Wallpaper {
-
-    class func femaleFirstNames() -> NSArray {
-        return ["Malinda", "Kaye", "Audra", "Trudie", "Stacee", "Esta", "Albertina", "Nakia",
-                "Bettye", "Remona", "Kimberli", "Clarinda", "Gussie", "Carmina", "Alia", "Shaquita",
-                "Rosalee", "Nicki", "Tamica", "Tressa", "Yvette", "Shantae", "Trena", "Abbie",
-                "Isabella", "Fiona", "Alejandrina", "Hyo", "Marvis", "Alexandra", "Torri", "Gemma"]
-    }
-
-    class func maleFirstNames() -> NSArray {
-        return ["Phillip", "Gene", "Trenton", "Darwin", "Darrin", "Herman", "Cody", "Maximo",
-                "Gabriel", "Noble", "Adan", "Dale", "Ali", "Laurence", "Paris", "Orval", "Randy",
-                "Ed", "Alonzo", "Margarito", "Leonard", "Houston", "Zackary", "Darnell", "Whitney",
-                "Samuel", "Claud", "Derick", "Teddy", "Rigoberto", "Leonardo", "Clay", "Lyman"]
-    }
-
-    class func lastNames() -> NSArray {
-        return ["Mclawhorn", "Lyvers", "Deborde", "Scarberry", "Swearingen", "Mccampbell", "Strum",
-                "Banuelos", "Parrish", "Bueno", "Wegener", "Vieira", "Plantz", "Mcquaid", "Bruckner",
-                "Orchard", "Wall", "Gerth", "Schweiger", "Minder", "Correa", "Cremer", "Close",
-                "Zink", "Victorian", "Bickle", "Vanorden", "Lauro", "Whitsitt", "Dubose", "Nowell"]
-    }
-
-    class func businessNameSingleWordPrefix() -> NSArray {
-        return ["Micro", "Star", "Wal", "Du", "Goo", "Citi", "Cono", "Kro", "Proc", "Boe", "Com",
-                "Sys", "Super", "Aet", "All", "Nation"]
-    }
-
-    class func businessNameSingleWordSuffix() -> NSArray {
-        return ["get", "bucks", "pont", "gle", "co", "ger", "ter", "thon", "soft", "get", "ing",
-                "cast", "a", "well", "na", "state", "r"]
-    }
-
-    class func businessPreFixes() -> NSArray {
-        return ["News", "Home", "World", "General", "Giant", "Big", "Honey", "Delta", "Southwest",
-                "Dr.", "Citi", "Wells", "Jamba", "Cost", "Green"]
-    }
-
-    class func businessMiddleParts() -> NSArray {
-        return ["Depot", "Juice", "Bucks", "Market", "Air", "Commercial", "Fuel", "Motor",
-                "Electric", "Mae", "Fruit"]
-    }
-
-    class func businessSuffixes() -> NSArray {
-        return ["Motors", "Builders", "Works", "Technologies", "Institute", "Labs", "Communications",
-                "Electric", "Co-Op", "Holdings", "Systems", "International", "Mobile", "Bank",
-                "Electric"]
-    }
-
-    class func businessCorporateMonickers() -> NSArray {
-        return [", Inc", " Incorporated", ", LLC", ", PC", " Group"]
-    }
-
-    class func businessDomains() -> NSArray {
-        return [".com", ".net"]
-    }
-}
+//private extension Wallpaper {
+//
+//    class func femaleFirstNames() -> NSArray {
+//        return ["Malinda", "Kaye", "Audra", "Trudie", "Stacee", "Esta", "Albertina", "Nakia",
+//                "Bettye", "Remona", "Kimberli", "Clarinda", "Gussie", "Carmina", "Alia", "Shaquita",
+//                "Rosalee", "Nicki", "Tamica", "Tressa", "Yvette", "Shantae", "Trena", "Abbie",
+//                "Isabella", "Fiona", "Alejandrina", "Hyo", "Marvis", "Alexandra", "Torri", "Gemma"]
+//    }
+//
+//    class func maleFirstNames() -> NSArray {
+//        return ["Phillip", "Gene", "Trenton", "Darwin", "Darrin", "Herman", "Cody", "Maximo",
+//                "Gabriel", "Noble", "Adan", "Dale", "Ali", "Laurence", "Paris", "Orval", "Randy",
+//                "Ed", "Alonzo", "Margarito", "Leonard", "Houston", "Zackary", "Darnell", "Whitney",
+//                "Samuel", "Claud", "Derick", "Teddy", "Rigoberto", "Leonardo", "Clay", "Lyman"]
+//    }
+//
+//    class func lastNames() -> NSArray {
+//        return ["Mclawhorn", "Lyvers", "Deborde", "Scarberry", "Swearingen", "Mccampbell", "Strum",
+//                "Banuelos", "Parrish", "Bueno", "Wegener", "Vieira", "Plantz", "Mcquaid", "Bruckner",
+//                "Orchard", "Wall", "Gerth", "Schweiger", "Minder", "Correa", "Cremer", "Close",
+//                "Zink", "Victorian", "Bickle", "Vanorden", "Lauro", "Whitsitt", "Dubose", "Nowell"]
+//    }
+//
+//    class func businessNameSingleWordPrefix() -> NSArray {
+//        return ["Micro", "Star", "Wal", "Du", "Goo", "Citi", "Cono", "Kro", "Proc", "Boe", "Com",
+//                "Sys", "Super", "Aet", "All", "Nation"]
+//    }
+//
+//    class func businessNameSingleWordSuffix() -> NSArray {
+//        return ["get", "bucks", "pont", "gle", "co", "ger", "ter", "thon", "soft", "get", "ing",
+//                "cast", "a", "well", "na", "state", "r"]
+//    }
+//
+//    class func businessPreFixes() -> NSArray {
+//        return ["News", "Home", "World", "General", "Giant", "Big", "Honey", "Delta", "Southwest",
+//                "Dr.", "Citi", "Wells", "Jamba", "Cost", "Green"]
+//    }
+//
+//    class func businessMiddleParts() -> NSArray {
+//        return ["Depot", "Juice", "Bucks", "Market", "Air", "Commercial", "Fuel", "Motor",
+//                "Electric", "Mae", "Fruit"]
+//    }
+//
+//    class func businessSuffixes() -> NSArray {
+//        return ["Motors", "Builders", "Works", "Technologies", "Institute", "Labs", "Communications",
+//                "Electric", "Co-Op", "Holdings", "Systems", "International", "Mobile", "Bank",
+//                "Electric"]
+//    }
+//
+//    class func businessCorporateMonickers() -> NSArray {
+//        return [", Inc", " Incorporated", ", LLC", ", PC", " Group"]
+//    }
+//
+//    class func businessDomains() -> NSArray {
+//        return [".com", ".net"]
+//    }
+//}
