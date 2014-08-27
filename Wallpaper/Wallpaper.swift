@@ -58,7 +58,7 @@ public struct WPHTMLOptions : RawOptionSetType, BooleanType {
 private let kWPPlaceKittenImageURLString = "http://placekitten.com/%@/%@"
 private let kWPPlaceKittenGreyscaleImageURLString = "http://placekitten.com/g/%@/%@"
 private let kWPPlaceBaconImageURLString = "http://baconmockup.com/%@/%@/"
-private let kWPPlaceHolderImageURLString = "http://placehold.it/%@/%@/"
+private let kWPPlaceHolderImageURLString = "http://placehold.it/%@x%@/"
 private let kWPPlaceRandomImageURLString = "http://lorempixel.com/%@/%@/"
 private let kWPPlaceRandomGreyscaleImageURLString = "http://lorempixel.com/g/%@/%@/"
 private let kWPPlaceRandomTextURLString = "http://loripsum.net/api/"
@@ -290,7 +290,7 @@ public extension Wallpaper {
         let g = randomPercentage()
         let b = randomPercentage()
 
-        return UIColor(red: r, green: g, blue: b, alpha: 1.0)
+        return UIColor(red: r, green: g, blue: b, alpha: alpha)
     }
 
     public class func placeRandomColorWithRandomAlpha() -> UIColor {

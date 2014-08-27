@@ -10,18 +10,20 @@ import UIKit
 
 class WPCollectionViewCell: UICollectionViewCell {
     
+    let imageView = UIImageView()
+    
     required init(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    let imageView = UIImageView()
-    
-    override init() {
-        super.init()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         imageView.frame = bounds
+        imageView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        addSubview(imageView)
     }
     
-    override func prepareForInterfaceBuilder() {
+    override func prepareForReuse() {
         imageView.image = nil
     }
     
