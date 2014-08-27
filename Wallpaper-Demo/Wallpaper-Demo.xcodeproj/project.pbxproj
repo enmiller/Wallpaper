@@ -13,7 +13,7 @@
 		7B37ED8A19A7FAB70082E720 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37ED8919A7FAB70082E720 /* AppDelegate.swift */; };
 		7B37ED9119A7FAB70082E720 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B37ED9019A7FAB70082E720 /* Images.xcassets */; };
 		7B37ED9D19A7FAB70082E720 /* Wallpaper_DemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37ED9C19A7FAB70082E720 /* Wallpaper_DemoTests.swift */; };
-		7B37EDAB19A7FB260082E720 /* Wallpapert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37EDAA19A7FB260082E720 /* Wallpapert.swift */; };
+		7B37EDAB19A7FB260082E720 /* Wallpaper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37EDAA19A7FB260082E720 /* Wallpaper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +37,7 @@
 		7B37ED9619A7FAB70082E720 /* Wallpaper-DemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Wallpaper-DemoTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7B37ED9B19A7FAB70082E720 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7B37ED9C19A7FAB70082E720 /* Wallpaper_DemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallpaper_DemoTests.swift; sourceTree = "<group>"; };
-		7B37EDAA19A7FB260082E720 /* Wallpapert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wallpapert.swift; sourceTree = "<group>"; };
+		7B37EDAA19A7FB260082E720 /* Wallpaper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wallpaper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,7 +119,7 @@
 		7B37EDA619A7FB010082E720 /* Wallpaper */ = {
 			isa = PBXGroup;
 			children = (
-				7B37EDAA19A7FB260082E720 /* Wallpapert.swift */,
+				7B37EDAA19A7FB260082E720 /* Wallpaper.swift */,
 			);
 			name = Wallpaper;
 			path = ../Wallpaper;
@@ -226,7 +226,7 @@
 				7B227D3C19ABBB4900BD4CF8 /* WPSecondViewController.swift in Sources */,
 				7B227D3E19ABBECF00BD4CF8 /* WPCollectionViewCell.swift in Sources */,
 				7B227D3A19ABBB0500BD4CF8 /* WPFirstViewController.swift in Sources */,
-				7B37EDAB19A7FB260082E720 /* Wallpapert.swift in Sources */,
+				7B37EDAB19A7FB260082E720 /* Wallpaper.swift in Sources */,
 				7B37ED8A19A7FAB70082E720 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

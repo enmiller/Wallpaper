@@ -55,14 +55,14 @@ public struct WPHTMLOptions : RawOptionSetType, BooleanType {
     static var Prude:            WPHTMLOptions { return self(1 << 9) }
 }
 
-public let kWPPlaceKittenImageURLString = "http://placekitten.com/%@/%@"
-public let kWPPlaceKittenGreyscaleImageURLString = "http://placekitten.com/g/%@/%@"
-public let kWPPlaceBaconImageURLString = "http://baconmockup.com/%@/%@/"
-public let kWPPlaceHolderImageURLString = "http://placehold.it/%@/%@/"
-public let kWPPlaceRandomImageURLString = "http://lorempixel.com/%@/%@/"
-public let kWPPlaceRandomGreyscaleImageURLString = "http://lorempixel.com/g/%@/%@/"
-public let kWPPlaceRandomTextURLString = "http://loripsum.net/api/"
-public let kWPPlaceRandomDowneyImageURLString = "http://rdjpg.com/%@/%@/"
+private let kWPPlaceKittenImageURLString = "http://placekitten.com/%@/%@"
+private let kWPPlaceKittenGreyscaleImageURLString = "http://placekitten.com/g/%@/%@"
+private let kWPPlaceBaconImageURLString = "http://baconmockup.com/%@/%@/"
+private let kWPPlaceHolderImageURLString = "http://placehold.it/%@/%@/"
+private let kWPPlaceRandomImageURLString = "http://lorempixel.com/%@/%@/"
+private let kWPPlaceRandomGreyscaleImageURLString = "http://lorempixel.com/g/%@/%@/"
+private let kWPPlaceRandomTextURLString = "http://loripsum.net/api/"
+private let kWPPlaceRandomDowneyImageURLString = "http://rdjpg.com/%@/%@/"
 
 public class Wallpaper: NSObject {
 
