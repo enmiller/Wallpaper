@@ -9,13 +9,26 @@
 import UIKit
 import Foundation
 
-public enum WPTextParagraphLength: Int {
-    case VeryShort = 0
-    case Short = 1
-    case Medium = 2
-    case Long = 3
-    case VeryLong = 4
+public enum WPTextParagraphLength : String {
+    case VeryShort = "veryshort"
+    case Short = "short"
+    case Medium = "medium"
+    case Long = "long"
+    case VeryLong = "verylong"
 }
+
+private enum WallpaperImageURLString : String {
+    case PlaceKitten = "http://placekitten.com/%@/%@"
+    case PlaceKittenGreyscale = "http://placekitten.com/g/%@/%@"
+    case Bacon = "http://baconmockup.com/%@/%@/"
+    case PlaceHolder = "http://placehold.it/%@x%@/"
+    case Random = "http://lorempixel.com/%@/%@/"
+    case RandomGreyscale = "http://lorempixel.com/g/%@/%@/"
+    case Downey = "http://rdjpg.com/%@/%@/"
+}
+
+private let kWPPlaceRandomTextURLString = "http://loripsum.net/api/"
+private let ColorAlphaLimit: Double = 0.1
 
 public struct WPTextOptions : RawOptionSetType, BooleanType {
     private var value: UInt = 0
@@ -30,6 +43,24 @@ public struct WPTextOptions : RawOptionSetType, BooleanType {
     static var None: WPTextOptions { return self(0) }
     static var AllCaps: WPTextOptions { return self(1 << 0) }
     static var Prude: WPTextOptions { return self(1 << 1) }
+
+    private enum Feature: String {
+        case AllCaps = "allcaps"
+        case PrudeText = "prude"
+    }
+
+    public func toMaskString() -> String {
+        var urlString = ""
+        if (self & .AllCaps) {
+            urlString = urlString.stringByAppendingPathComponent(Feature.AllCaps.toRaw())
+        }
+
+        if (self & .Prude) {
+            urlString = urlString.stringByAppendingPathComponent(Feature.PrudeText.toRaw())
+        }
+
+        return urlString
+    }
 }
 
 public struct WPHTMLOptions : RawOptionSetType, BooleanType {
@@ -53,16 +84,57 @@ public struct WPHTMLOptions : RawOptionSetType, BooleanType {
     static var Headers:          WPHTMLOptions { return self(1 << 7) }
     static var AllCaps:          WPHTMLOptions { return self(1 << 8) }
     static var Prude:            WPHTMLOptions { return self(1 << 9) }
-}
 
-private let kWPPlaceKittenImageURLString = "http://placekitten.com/%@/%@"
-private let kWPPlaceKittenGreyscaleImageURLString = "http://placekitten.com/g/%@/%@"
-private let kWPPlaceBaconImageURLString = "http://baconmockup.com/%@/%@/"
-private let kWPPlaceHolderImageURLString = "http://placehold.it/%@x%@/"
-private let kWPPlaceRandomImageURLString = "http://lorempixel.com/%@/%@/"
-private let kWPPlaceRandomGreyscaleImageURLString = "http://lorempixel.com/g/%@/%@/"
-private let kWPPlaceRandomTextURLString = "http://loripsum.net/api/"
-private let kWPPlaceRandomDowneyImageURLString = "http://rdjpg.com/%@/%@/"
+    private enum Feature: String {
+        case Links = "link"
+        case Emphasis = "decorate"
+        case UnorderedList = "u1"
+        case OrderedList = "o1"
+        case DescriptionList = "d1"
+        case Blockquotes = "bq"
+        case CodeSamples = "code"
+        case Headers = "headers"
+        case AllCaps = "allcaps"
+        case PrudeText = "prude"
+    }
+
+    public func toMaskString() -> String {
+        var optionsString: String = ""
+
+        if (self & .AnchorTags) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Links.toRaw())
+        }
+        if (self & .EmphasisTags) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Emphasis.toRaw())
+        }
+        if (self & .UnorderedList) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.UnorderedList.toRaw())
+        }
+        if (self & .OrderedList) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.OrderedList.toRaw())
+        }
+        if (self & .DescriptionList) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.DescriptionList.toRaw())
+        }
+        if (self & .Blockquotes) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Blockquotes.toRaw())
+        }
+        if (self & .CodeSamples) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.CodeSamples.toRaw())
+        }
+        if (self & .Headers) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Headers.toRaw())
+        }
+        if (self & .AllCaps) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.AllCaps.toRaw())
+        }
+        if (self & .Prude) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.PrudeText.toRaw())
+        }
+
+        return optionsString
+    }
+}
 
 public class Wallpaper: NSObject {
 
@@ -82,107 +154,47 @@ public class Wallpaper: NSObject {
             }
         }
     }
-
-    private class func paragraphLengthParameterFromParagraphLength(paragraphLength: WPTextParagraphLength) -> String {
-        var paragraphLengthParameter: String
-        switch paragraphLength {
-        case .VeryShort:
-            paragraphLengthParameter = "veryshort"
-            break
-        case .Short:
-            paragraphLengthParameter = "short"
-            break
-        case .Medium:
-            paragraphLengthParameter = "medium"
-            break
-        case .Long:
-            paragraphLengthParameter = "long"
-            break
-        case .VeryLong:
-            paragraphLengthParameter = "verylong"
-            break
-        }
-
-        return paragraphLengthParameter
-    }
-
-    private class func htmlOptionsString(htmlOptions: WPHTMLOptions) -> String {
-        var optionsString: String = ""
-
-        if (htmlOptions & WPHTMLOptions.AnchorTags) {
-            optionsString = optionsString.stringByAppendingPathComponent("link")
-        }
-        if (htmlOptions & WPHTMLOptions.EmphasisTags) {
-            optionsString = optionsString.stringByAppendingPathComponent("decorate")
-        }
-        if (htmlOptions & WPHTMLOptions.UnorderedList) {
-            optionsString = optionsString.stringByAppendingPathComponent("u1")
-        }
-        if (htmlOptions & WPHTMLOptions.OrderedList) {
-            optionsString = optionsString.stringByAppendingPathComponent("o1")
-        }
-        if (htmlOptions & WPHTMLOptions.DescriptionList) {
-            optionsString = optionsString.stringByAppendingPathComponent("d1")
-        }
-        if (htmlOptions & WPHTMLOptions.Blockquotes) {
-            optionsString = optionsString.stringByAppendingPathComponent("bq")
-        }
-        if (htmlOptions & WPHTMLOptions.CodeSamples) {
-            optionsString = optionsString.stringByAppendingPathComponent("code")
-        }
-        if (htmlOptions & WPHTMLOptions.Headers) {
-            optionsString = optionsString.stringByAppendingPathComponent("headers")
-        }
-        if (htmlOptions & WPHTMLOptions.AllCaps) {
-            optionsString = optionsString.stringByAppendingPathComponent("allcaps")
-        }
-        if (htmlOptions & WPHTMLOptions.Prude) {
-            optionsString = optionsString.stringByAppendingPathComponent("prude")
-        }
-
-        return optionsString
-    }
 }
 
 //MARK: - Images
 public extension Wallpaper {
 
     public class func placeKittenImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(kWPPlaceKittenImageURLString, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.PlaceKitten.toRaw(), size: size, completion: completion)
     }
 
     public class func placeKittenGreyscaleImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(kWPPlaceKittenGreyscaleImageURLString, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.PlaceKittenGreyscale.toRaw(), size: size, completion: completion)
     }
 
     public class func placeBaconImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(kWPPlaceBaconImageURLString, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.Bacon.toRaw(), size: size, completion: completion)
     }
 
     public class func placeHolderImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(kWPPlaceHolderImageURLString, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.PlaceHolder.toRaw(), size: size, completion: completion)
     }
 
     public class func placeRandomImage(size: CGSize, category: String, completion: (image: UIImage?) -> ()) {
-        let path = kWPPlaceRandomImageURLString.stringByAppendingPathComponent(category)
+        let path = WallpaperImageURLString.Random.toRaw().stringByAppendingPathComponent(category)
         requestImage(path, size: size, completion: completion)
     }
 
     public class func placeRandomGreyscaleImage(size: CGSize, category: String, completion: (image: UIImage?) -> ()) {
-        let path = kWPPlaceRandomGreyscaleImageURLString.stringByAppendingPathComponent(category)
+        let path = WallpaperImageURLString.RandomGreyscale.toRaw().stringByAppendingPathComponent(category)
         requestImage(path, size: size, completion: completion)
     }
 
     public class func placeRandomImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(kWPPlaceRandomImageURLString, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.Random.toRaw(), size: size, completion: completion)
     }
 
     public class func placeRandomGreyscaleImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(kWPPlaceRandomGreyscaleImageURLString, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.RandomGreyscale.toRaw(), size: size, completion: completion)
     }
 
     public class func placeDowneyImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(kWPPlaceRandomDowneyImageURLString, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.Downey.toRaw(), size: size, completion: completion)
     }
 }
 
@@ -193,18 +205,9 @@ public extension Wallpaper {
     public class func placeText(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, textOptions: WPTextOptions, completion: (placeText: String?) -> ()) {
         assert(numberOfParagraphs > 0, "Number of paragraphs is invalid")
 
-        var urlString = kWPPlaceRandomTextURLString
-        if (textOptions & WPTextOptions.AllCaps) {
-            urlString = urlString.stringByAppendingPathComponent("allcaps")
-        }
-
-        if (textOptions & WPTextOptions.Prude) {
-            urlString = urlString.stringByAppendingPathComponent("prude")
-        }
-
-        let paragraphLengthParameter = paragraphLengthParameterFromParagraphLength(paragraphLength)
+        var urlString = kWPPlaceRandomTextURLString.stringByAppendingString(textOptions.toMaskString())
         urlString = urlString.stringByAppendingPathComponent("plaintext")
-        urlString = urlString.stringByAppendingPathComponent(paragraphLengthParameter)
+        urlString = urlString.stringByAppendingPathComponent(paragraphLength.toRaw())
 
         let paragraphArgs = "\(numberOfParagraphs)"
         urlString = urlString.stringByAppendingPathComponent(paragraphArgs)
@@ -259,10 +262,9 @@ public extension Wallpaper {
 
     public class func placeURLForHTML(paragraphs: Int, paragraphLength: WPTextParagraphLength, htmlOptions: WPHTMLOptions) -> NSURL {
         var htmlURLString = kWPPlaceRandomTextURLString
-        let optionsString = htmlOptionsString(htmlOptions)
-        let lengthString = paragraphLengthParameterFromParagraphLength(paragraphLength)
+        let optionsString = htmlOptions.toMaskString()
 
-        htmlURLString = htmlURLString.stringByAppendingPathComponent(lengthString)
+        htmlURLString = htmlURLString.stringByAppendingPathComponent(paragraphLength.toRaw())
         htmlURLString = htmlURLString.stringByAppendingPathComponent(optionsString)
 
         return NSURL(string: htmlURLString)
@@ -294,7 +296,7 @@ public extension Wallpaper {
     }
 
     public class func placeRandomColorWithRandomAlpha() -> UIColor {
-        let alpha = max(randomPercentage(), 0.1)
+        let alpha = max(randomPercentage(), CGFloat(ColorAlphaLimit))
         return placeRandomColorWithAlpha(alpha)
     }
 
@@ -303,12 +305,12 @@ public extension Wallpaper {
     }
 
     public class func placeRandomGreyscaleColor(alpha: CGFloat) -> UIColor {
-        let greyness = min(max(randomPercentage(), 0.1), 0.95)
+        let greyness = min(max(randomPercentage(), CGFloat(ColorAlphaLimit)), CGFloat((1.0 - ColorAlphaLimit)))
         return UIColor(white: greyness, alpha: alpha)
     }
 
     public class func placeRandomGreyscaleColorWithRandomAlpha() -> UIColor {
-        let alpha = max(randomPercentage(), 0.1)
+        let alpha = max(randomPercentage(), CGFloat(ColorAlphaLimit))
         return placeRandomGreyscaleColor(alpha)
     }
 

@@ -7,17 +7,26 @@
 //
 
 import UIKit
+import Foundation
 
 private let secondCellReuseID = "cellID"
 
+enum Section : Int {
+    case BlueHues = 0, RandomColors, RandomAlphaColor, RandomGreyscale, RandomAlphaGreyscale, RandomGreenHue
+}
+
 class WPSecondViewController: UIViewController {
     
-    var collectionView: UICollectionView?
+    var collectionView: UICollectionView
     
     override init() {
+        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
+
         super.init(nibName: nil, bundle: nil)
+
         title = "Colors"
         tabBarItem.image = UIImage(named: "Second")
+        
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -27,12 +36,17 @@ class WPSecondViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView!.backgroundColor = UIColor.whiteColor()
-        collectionView!.delegate = self;
-        collectionView!.dataSource = self;
-        collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: secondCellReuseID)
-        view.addSubview(collectionView!)
+        let bottomInset = self.tabBarController.tabBar.bounds.height
+        let edgeInsets = UIEdgeInsetsMake(20.0, 0.0, bottomInset, 0.0)
+
+        collectionView.frame = view.bounds
+        collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.delegate = self;
+        collectionView.dataSource = self;
+        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: secondCellReuseID)
+        collectionView.contentInset = edgeInsets
+
+        view.addSubview(collectionView)
     }
 
     private func blueHueColorForCell(cell: UICollectionViewCell) {
@@ -81,18 +95,22 @@ extension WPSecondViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(collectionView: UICollectionView!, cellForItemAtIndexPath indexPath: NSIndexPath!) -> UICollectionViewCell! {
         var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(secondCellReuseID, forIndexPath: indexPath) as UICollectionViewCell
 
-        if (indexPath.section == 0) {
-            blueHueColorForCell(collectionCell)
-        } else if indexPath.section == 1 {
-            randomColorForCell(collectionCell)
-        } else if(indexPath.section == 2) {
-            randomColorAndAlphaForCell(collectionCell)
-        } else if (indexPath.section == 3) {
-            randomGreyscaleColorForCell(collectionCell)
-        } else if (indexPath.section == 4) {
-            randomGreyscaleColorAndAlphaForCell(collectionCell)
-        } else {
-            randomColorWithHueOfGreenForCell(collectionCell)
+        if let sectionIndex = indexPath {
+            let section = Section.fromRaw(sectionIndex.section)!
+            switch (section) {
+                case .BlueHues:
+                    blueHueColorForCell(collectionCell)
+                case .RandomColors:
+                    randomColorForCell(collectionCell)
+                case .RandomAlphaColor:
+                    randomColorAndAlphaForCell(collectionCell)
+                case .RandomGreyscale:
+                    randomGreyscaleColorForCell(collectionCell)
+                case .RandomAlphaGreyscale:
+                    randomGreyscaleColorAndAlphaForCell(collectionCell)
+                case .RandomGreenHue:
+                    randomColorWithHueOfGreenForCell(collectionCell)
+            }
         }
 
         return collectionCell
