@@ -14,6 +14,11 @@
 		7B37ED9119A7FAB70082E720 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B37ED9019A7FAB70082E720 /* Images.xcassets */; };
 		7B37ED9D19A7FAB70082E720 /* Wallpaper_DemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37ED9C19A7FAB70082E720 /* Wallpaper_DemoTests.swift */; };
 		7B37EDAB19A7FB260082E720 /* Wallpaper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37EDAA19A7FB260082E720 /* Wallpaper.swift */; };
+		7B8686DE19AF8CBD00953E59 /* Wallpaper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37EDAA19A7FB260082E720 /* Wallpaper.swift */; };
+		7B8686DF19AF8CC100953E59 /* WPSecondViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B227D3B19ABBB4900BD4CF8 /* WPSecondViewController.swift */; };
+		7B8686E019AF8CC500953E59 /* WPFirstViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B227D3919ABBB0500BD4CF8 /* WPFirstViewController.swift */; };
+		7B8686E119AF8CC800953E59 /* WPCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B227D3D19ABBECF00BD4CF8 /* WPCollectionViewCell.swift */; };
+		7B8686E219AF8CCB00953E59 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B37ED8919A7FAB70082E720 /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -235,6 +240,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B8686E219AF8CCB00953E59 /* AppDelegate.swift in Sources */,
+				7B8686E019AF8CC500953E59 /* WPFirstViewController.swift in Sources */,
+				7B8686E119AF8CC800953E59 /* WPCollectionViewCell.swift in Sources */,
+				7B8686DE19AF8CBD00953E59 /* Wallpaper.swift in Sources */,
+				7B8686DF19AF8CC100953E59 /* WPSecondViewController.swift in Sources */,
 				7B37ED9D19A7FAB70082E720 /* Wallpaper_DemoTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
