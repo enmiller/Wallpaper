@@ -17,14 +17,14 @@ public enum WPTextParagraphLength : String {
     case VeryLong = "verylong"
 }
 
-private enum WallpaperImageURLString : String {
-    case PlaceKitten = "http://placekitten.com/%@/%@"
-    case PlaceKittenGreyscale = "http://placekitten.com/g/%@/%@"
-    case Bacon = "http://baconmockup.com/%@/%@/"
-    case PlaceHolder = "http://placehold.it/%@x%@/"
-    case Random = "http://lorempixel.com/%@/%@/"
-    case RandomGreyscale = "http://lorempixel.com/g/%@/%@/"
-    case Downey = "http://rdjpg.com/%@/%@/"
+private struct WallpaperImageURLString {
+    static let PlaceKitten = "http://placekitten.com/%@/%@"
+    static let PlaceKittenGreyscale = "http://placekitten.com/g/%@/%@"
+    static let Bacon = "http://baconmockup.com/%@/%@/"
+    static let PlaceHolder = "http://placehold.it/%@x%@/"
+    static let Random = "http://lorempixel.com/%@/%@/"
+    static let RandomGreyscale = "http://lorempixel.com/g/%@/%@/"
+    static let Downey = "http://rdjpg.com/%@/%@/"
 }
 
 private let kWPPlaceRandomTextURLString = "http://loripsum.net/api/"
@@ -44,19 +44,19 @@ public struct WPTextOptions : RawOptionSetType, BooleanType {
     static var AllCaps: WPTextOptions { return self(1 << 0) }
     static var Prude: WPTextOptions { return self(1 << 1) }
 
-    private enum Feature: String {
-        case AllCaps = "allcaps"
-        case PrudeText = "prude"
+    private struct Feature {
+        static let AllCaps = "allcaps"
+        static let PrudeText = "prude"
     }
 
     public func toMaskString() -> String {
         var urlString = ""
         if (self & .AllCaps) {
-            urlString = urlString.stringByAppendingPathComponent(Feature.AllCaps.toRaw())
+            urlString = urlString.stringByAppendingPathComponent(Feature.AllCaps)
         }
 
         if (self & .Prude) {
-            urlString = urlString.stringByAppendingPathComponent(Feature.PrudeText.toRaw())
+            urlString = urlString.stringByAppendingPathComponent(Feature.PrudeText)
         }
 
         return urlString
@@ -85,51 +85,51 @@ public struct WPHTMLOptions : RawOptionSetType, BooleanType {
     static var AllCaps:          WPHTMLOptions { return self(1 << 8) }
     static var Prude:            WPHTMLOptions { return self(1 << 9) }
 
-    private enum Feature: String {
-        case Links = "link"
-        case Emphasis = "decorate"
-        case UnorderedList = "u1"
-        case OrderedList = "o1"
-        case DescriptionList = "d1"
-        case Blockquotes = "bq"
-        case CodeSamples = "code"
-        case Headers = "headers"
-        case AllCaps = "allcaps"
-        case PrudeText = "prude"
+    private struct Feature {
+        static let Links = "link"
+        static let Emphasis = "decorate"
+        static let UnorderedList = "u1"
+        static let OrderedList = "o1"
+        static let DescriptionList = "d1"
+        static let Blockquotes = "bq"
+        static let CodeSamples = "code"
+        static let Headers = "headers"
+        static let AllCaps = "allcaps"
+        static let PrudeText = "prude"
     }
 
     public func toMaskString() -> String {
         var optionsString: String = ""
 
         if (self & .AnchorTags) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Links.toRaw())
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Links)
         }
         if (self & .EmphasisTags) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Emphasis.toRaw())
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Emphasis)
         }
         if (self & .UnorderedList) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.UnorderedList.toRaw())
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.UnorderedList)
         }
         if (self & .OrderedList) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.OrderedList.toRaw())
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.OrderedList)
         }
         if (self & .DescriptionList) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.DescriptionList.toRaw())
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.DescriptionList)
         }
         if (self & .Blockquotes) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Blockquotes.toRaw())
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Blockquotes)
         }
         if (self & .CodeSamples) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.CodeSamples.toRaw())
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.CodeSamples)
         }
         if (self & .Headers) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Headers.toRaw())
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Headers)
         }
         if (self & .AllCaps) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.AllCaps.toRaw())
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.AllCaps)
         }
         if (self & .Prude) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.PrudeText.toRaw())
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.PrudeText)
         }
 
         return optionsString
@@ -149,7 +149,7 @@ public class Wallpaper: NSObject {
                 let image = UIImage(data: data, scale: screenScale)
                 completion(image: image);
             } else {
-                println("++ Wallpaper Error: \(error)")
+                println("\(__FUNCTION__) Wallpaper Error: \(error)")
                 completion(image: nil)
             }
         }
@@ -160,41 +160,41 @@ public class Wallpaper: NSObject {
 public extension Wallpaper {
 
     public class func placeKittenImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.PlaceKitten.toRaw(), size: size, completion: completion)
+        requestImage(WallpaperImageURLString.PlaceKitten, size: size, completion: completion)
     }
 
     public class func placeKittenGreyscaleImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.PlaceKittenGreyscale.toRaw(), size: size, completion: completion)
+        requestImage(WallpaperImageURLString.PlaceKittenGreyscale, size: size, completion: completion)
     }
 
     public class func placeBaconImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.Bacon.toRaw(), size: size, completion: completion)
+        requestImage(WallpaperImageURLString.Bacon, size: size, completion: completion)
     }
 
     public class func placeHolderImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.PlaceHolder.toRaw(), size: size, completion: completion)
+        requestImage(WallpaperImageURLString.PlaceHolder, size: size, completion: completion)
     }
 
     public class func placeRandomImage(size: CGSize, category: String, completion: (image: UIImage?) -> ()) {
-        let path = WallpaperImageURLString.Random.toRaw().stringByAppendingPathComponent(category)
+        let path = WallpaperImageURLString.Random.stringByAppendingPathComponent(category)
         requestImage(path, size: size, completion: completion)
     }
 
     public class func placeRandomGreyscaleImage(size: CGSize, category: String, completion: (image: UIImage?) -> ()) {
-        let path = WallpaperImageURLString.RandomGreyscale.toRaw().stringByAppendingPathComponent(category)
+        let path = WallpaperImageURLString.RandomGreyscale.stringByAppendingPathComponent(category)
         requestImage(path, size: size, completion: completion)
     }
 
     public class func placeRandomImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.Random.toRaw(), size: size, completion: completion)
+        requestImage(WallpaperImageURLString.Random, size: size, completion: completion)
     }
 
     public class func placeRandomGreyscaleImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.RandomGreyscale.toRaw(), size: size, completion: completion)
+        requestImage(WallpaperImageURLString.RandomGreyscale, size: size, completion: completion)
     }
 
     public class func placeDowneyImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.Downey.toRaw(), size: size, completion: completion)
+        requestImage(WallpaperImageURLString.Downey, size: size, completion: completion)
     }
 }
 
@@ -218,7 +218,7 @@ public extension Wallpaper {
                 let returnString = NSString(data: data, encoding: NSUTF8StringEncoding)
                 completion(placeText: returnString)
             } else {
-                println("++ Wallpaper Error: \(error)")
+                println("\(__FUNCTION__) Wallpaper Error: \(error)")
                 completion(placeText: nil)
             }
         }
@@ -240,7 +240,7 @@ public extension Wallpaper {
                 let returnString = dict["text"] as String
                 completion(hipsterIpsum: returnString)
             } else {
-                println("++ Wallpaper Error: \(error)")
+                println("\(__FUNCTION__) Wallpaper Error: \(error)")
                 completion(hipsterIpsum: nil)
             }
         }
@@ -254,7 +254,7 @@ public extension Wallpaper {
                 let returnString = NSString(data: data, encoding: NSUTF8StringEncoding)
                 completion(placeText: returnString)
             } else {
-                println("++ Wallpaper Error: \(error)")
+                println("\(__FUNCTION__) Wallpaper Error: \(error)")
                 completion(placeText: nil)
             }
         }
@@ -277,8 +277,13 @@ public extension Wallpaper {
     public class func placeRandomColorWithHue(hue: CGFloat) -> UIColor {
         assert(hue <= 1 && hue >= 0, "Hue value must be between 0 and 1")
 
-        let s = randomPercentage(NSMakeRange(10, 90))
-        let b = randomPercentage(NSMakeRange(10, 90))
+        let upperLimit = 100
+        let lowerLimit = 10
+
+        let percentRange = NSMakeRange(lowerLimit, upperLimit - lowerLimit)
+
+        let s = randomPercentage(percentRange)
+        let b = randomPercentage(percentRange)
 
         return UIColor(hue: hue, saturation: s, brightness: b, alpha: 1.0)
     }
