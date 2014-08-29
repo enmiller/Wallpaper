@@ -18,6 +18,7 @@ class WPCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = UIColor.lightGrayColor()
         imageView.frame = bounds
         imageView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
         addSubview(imageView)
