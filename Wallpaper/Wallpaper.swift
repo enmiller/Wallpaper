@@ -98,7 +98,7 @@ public struct WPHTMLOptions : RawOptionSetType, BooleanType {
         static let PrudeText = "prude"
     }
 
-    public func toMaskString() -> String {
+    public func toURLPathString() -> String {
         var optionsString: String = ""
 
         if (self & .AnchorTags) {
@@ -262,7 +262,7 @@ public extension Wallpaper {
 
     public class func placeURLForHTML(paragraphLength: WPTextParagraphLength, htmlOptions: WPHTMLOptions) -> NSURL {
         let htmlURLString = kWPPlaceRandomTextURLString
-        let optionsString = htmlOptions.toMaskString()
+        let optionsString = htmlOptions.toURLPathString()
 
         let lengthURLString = htmlURLString + "\(paragraphLength.toRaw())"
         let fullURLString = lengthURLString + "/\(optionsString)"
