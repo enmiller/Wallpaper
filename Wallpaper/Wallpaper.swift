@@ -247,7 +247,7 @@ public extension Wallpaper {
     }
 
     public class func placeHTML(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, options: WPHTMLOptions, completion: (placeText: String?) -> ()) -> () {
-        let htmlURL = placeURLForHTML(numberOfParagraphs, paragraphLength: paragraphLength, htmlOptions: options)
+        let htmlURL = placeURLForHTML(paragraphLength, htmlOptions: options)
         let request = NSURLRequest(URL: htmlURL)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
@@ -260,14 +260,14 @@ public extension Wallpaper {
         }
     }
 
-    public class func placeURLForHTML(paragraphs: Int, paragraphLength: WPTextParagraphLength, htmlOptions: WPHTMLOptions) -> NSURL {
-        var htmlURLString = kWPPlaceRandomTextURLString
+    public class func placeURLForHTML(paragraphLength: WPTextParagraphLength, htmlOptions: WPHTMLOptions) -> NSURL {
+        let htmlURLString = kWPPlaceRandomTextURLString
         let optionsString = htmlOptions.toMaskString()
 
-        htmlURLString = htmlURLString.stringByAppendingPathComponent(paragraphLength.toRaw())
-        htmlURLString = htmlURLString.stringByAppendingPathComponent(optionsString)
+        let lengthURLString = htmlURLString + "\(paragraphLength.toRaw())"
+        let fullURLString = lengthURLString + "/\(optionsString)"
 
-        return NSURL(string: htmlURLString)
+        return NSURL(string: fullURLString)
     }
 }
 

@@ -121,6 +121,6 @@ extension WPSecondViewController: UICollectionViewDelegate, UICollectionViewData
     }
 
     func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 20.0, left: 10.0, bottom: 20.0, right: 10.0)
+        return UIEdgeInsets(top: 20.0, left: 10.0, bottom: 60.0, right: 10.0)
     }
 }
