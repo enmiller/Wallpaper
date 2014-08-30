@@ -10,11 +10,16 @@ import UIKit
 
 private let firstCellReuseID = "cellID"
 
+enum ImageType : Int {
+    case Kittens = 0, Placeholders, Bacon, GreyscaleKittens, Random, Downey, GreyscaleRandom
+}
+
 class WPFirstViewController: UIViewController {
     
-    var collectionView: UICollectionView?
+    var collectionView: UICollectionView
 
     override init() {
+        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
         super.init(nibName: nil, bundle: nil)
         title = "Images"
         tabBarItem.image = UIImage(named: "First")
@@ -27,45 +32,39 @@ class WPFirstViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView!.backgroundColor = UIColor.whiteColor()
-        collectionView!.delegate = self;
-        collectionView!.dataSource = self;
-        collectionView!.registerClass(WPCollectionViewCell.self, forCellWithReuseIdentifier: firstCellReuseID)
-        view.addSubview(collectionView!)
+        collectionView.frame = view.bounds
+        collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.delegate = self;
+        collectionView.dataSource = self;
+        collectionView.registerClass(WPCollectionViewCell.self, forCellWithReuseIdentifier: firstCellReuseID)
+
+        view.addSubview(collectionView)
     }
 
     private func randomPlaceholderImageForCell(cell: WPCollectionViewCell) {
-        let random = arc4random_uniform(6)
+        let random = ImageType.fromRaw(Int(arc4random_uniform(6)))!
+        let size = cell.bounds.size
+        let imageView = cell.imageView
+        
+        let completion: (image: UIImage?) -> Void = { image in
+            imageView.image = image
+        }
+
         switch (random) {
-        case 0:
-            Wallpaper.placeKittenImage(cell.bounds.size, completion: { image in
-                cell.imageView.image = image
-            })
-        case 1:
-            Wallpaper.placeHolderImage(cell.bounds.size, completion: { image in
-                cell.imageView.image = image
-            })
-        case 2:
-            Wallpaper.placeBaconImage(cell.bounds.size, completion: { image in
-                cell.imageView.image = image
-            })
-        case 3:
-            Wallpaper.placeKittenGreyscaleImage(cell.bounds.size, completion: { image in
-                cell.imageView.image = image
-            })
-        case 4:
-            Wallpaper.placeRandomImage(cell.bounds.size, completion: { image in
-                cell.imageView.image = image
-            })
-        case 5:
-            Wallpaper.placeDowneyImage(cell.bounds.size, completion: { image in
-                cell.imageView.image = image
-            })
-        default:
-            Wallpaper.placeRandomGreyscaleImage(cell.bounds.size, completion: { image in
-                cell.imageView.image = image
-            })
+        case .Kittens:
+            Wallpaper.placeKittenImage(size, completion)
+        case .Placeholders:
+            Wallpaper.placeHolderImage(size, completion)
+        case .Bacon:
+            Wallpaper.placeBaconImage(size, completion)
+        case .GreyscaleKittens:
+            Wallpaper.placeKittenGreyscaleImage(size, completion)
+        case .Random:
+            Wallpaper.placeRandomImage(size, completion)
+        case .Downey:
+            Wallpaper.placeDowneyImage(size, completion)
+        case .GreyscaleRandom:
+            Wallpaper.placeRandomGreyscaleImage(size, completion)
         }
     }
 }

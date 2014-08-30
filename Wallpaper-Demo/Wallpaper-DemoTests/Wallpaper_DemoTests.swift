@@ -9,12 +9,11 @@
 import UIKit
 import XCTest
 
-class Wallpaper_DemoTests: XCTestCase {
+class Wallpaper_ImageTests: XCTestCase {
     
     let theSize = CGSizeMake(100.0, 200.0)
     let expectationTimeoutString = "The test expectation did not return in time"
     let imageFailureString = "The network returned a nil image"
-    let textFailureString = "The network did not return any text"
     
     override func setUp() {
         super.setUp()
@@ -118,6 +117,12 @@ class Wallpaper_DemoTests: XCTestCase {
         })
     }
     
+}
+
+class Wallpaper_TextTests: XCTestCase {
+    let expectationTimeoutString = "The test expectation did not return in time"
+    let textFailureString = "The network did not return any text"
+    
 //MARK: - Text
     func testPlaceTextWithOneParagraphShortLengthAllCapsReturnsText() {
         let completedExpectation = expectationWithDescription("completed")
@@ -163,5 +168,62 @@ class Wallpaper_DemoTests: XCTestCase {
         let returnedURL = Wallpaper.placeURLForHTML(.Medium, htmlOptions: .EmphasisTags)
         let returnedURLString = "\(returnedURL)"
         XCTAssert(knownURLString == returnedURLString, "The returned URL did not match the expected URL")
+    }
+}
+
+class Wallpaper_ColorTests: XCTestCase {
+    let huePercentage: CGFloat = 0.45
+    let alpha: CGFloat = 0.5
+    
+    func testRandomColorWithHueReturnsColor() {
+        let color = Wallpaper.placeRandomColorWithHue(huePercentage)
+        
+        XCTAssertNotNil(color, "Color was nil!")
+    }
+    
+    func testRandomColorWithHue() {
+        
+        let color = Wallpaper.placeRandomColorWithHue(huePercentage)
+        
+        var resultingHue: CGFloat = 0.0
+        color.getHue(&resultingHue, saturation: nil, brightness: nil, alpha: nil)
+        XCTAssertEqualWithAccuracy(resultingHue, huePercentage, 0.001, "Resulting hue was not the same as the input hue!");
+    }
+    
+    func testRandomColorReturnsColor() {
+        let color = Wallpaper.placeRandomColor()
+        
+        XCTAssertNotNil(color, "Color was nil!")
+    }
+    
+    func testRandomAlphaColorReturnsColor() {
+        let color = Wallpaper.placeRandomColorWithAlpha(alpha)
+        
+        XCTAssertNotNil(color, "Color was nil!")
+    }
+    
+    func testRandomAlphaColorReturnsColorWithAlpha() {
+        let color = Wallpaper.placeRandomColorWithAlpha(alpha)
+        
+        var resultingAlpha: CGFloat = 0.0
+        color.getWhite(nil, alpha: &resultingAlpha)
+        
+        XCTAssertEqualWithAccuracy(alpha, resultingAlpha, 0.0001, "Alpha values were not equal!")
+    }
+    
+    func testRandomGreyscaleColorHasGreyscaleColorSpace() {
+        let color = Wallpaper.placeRandomGreyscaleColor()
+        
+        let colorSpace: CGColorSpace = CGColorGetColorSpace(color.CGColor)
+        let greyScaleColorSpace = CGColorSpaceCreateDeviceGray()
+        XCTAssertTrue(colorSpace === greyScaleColorSpace, "Colorspace was not a greyscale color space!")
+    }
+    
+    func testRandomGreyscaleColorWithAlphaReturnsCorrectAlpha() {
+        let color = Wallpaper.placeRandomGreyscaleColor(alpha)
+        var resultingAlpha: CGFloat = 0.0
+        color.getWhite(nil, alpha: &resultingAlpha)
+        
+        XCTAssertEqualWithAccuracy(alpha, resultingAlpha, 0.0001, "Alpha values were not equal!")
     }
 }
