@@ -70,19 +70,19 @@ class WPFirstViewController: UIViewController {
 }
 
 extension WPFirstViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(collectionView: UICollectionView!, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let range = NSMakeRange(35, 300)
         return (range.location + Int(arc4random_uniform(UInt32(range.length))))
     }
 
-    func collectionView(collectionView: UICollectionView!, cellForItemAtIndexPath indexPath: NSIndexPath!) -> UICollectionViewCell! {
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(firstCellReuseID, forIndexPath: indexPath) as WPCollectionViewCell
         randomPlaceholderImageForCell(collectionCell)
 
         return collectionCell
     }
 
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         let widthRange = NSMakeRange(35, 250)
         let width = CGFloat((widthRange.location + Int(arc4random_uniform(UInt32(widthRange.length)))))
 
@@ -92,7 +92,7 @@ extension WPFirstViewController: UICollectionViewDelegate, UICollectionViewDataS
         return CGSizeMake(width, height)
     }
 
-    func collectionView(collectionView: UICollectionView!, layout collectionViewLayout: UICollectionViewLayout!, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 20.0, left: 10.0, bottom: 20.0, right: 10.0)
     }
 }
