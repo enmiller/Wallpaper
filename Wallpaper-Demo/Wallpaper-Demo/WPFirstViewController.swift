@@ -16,13 +16,34 @@ enum ImageType : Int {
 
 class WPFirstViewController: UIViewController {
     
+    private let cellSizes: [CGSize]
+    
     var collectionView: UICollectionView
 
     override init() {
         collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
+        cellSizes = WPFirstViewController.initialCellSizes()
+        
         super.init(nibName: nil, bundle: nil)
+        
         title = "Images"
         tabBarItem.image = UIImage(named: "First")
+    }
+    
+    private class func initialCellSizes() -> [CGSize] {
+        var cells: [CGSize] = Array()
+        let range = NSMakeRange(35, 300)
+        let end: Int = (range.location + Int(arc4random_uniform(UInt32(range.length))))
+        
+        for index in 0...end {
+            let widthRange = NSMakeRange(35, 250)
+            let width = CGFloat((widthRange.location + Int(arc4random_uniform(UInt32(widthRange.length)))))
+            
+            let heightRange = NSMakeRange(35, 300)
+            let height = CGFloat((heightRange.location + Int(arc4random_uniform(UInt32(heightRange.length)))))
+            cells.append(CGSizeMake(width, height))
+        }
+        return cells
     }
 
     required init(coder aDecoder: NSCoder) {
@@ -47,7 +68,11 @@ class WPFirstViewController: UIViewController {
         let imageView = cell.imageView
         
         let completion: (image: UIImage?) -> Void = { image in
-            imageView.image = image
+            if let img = image {
+                if img.size == size {
+                    imageView.image = image
+                }
+            }
         }
 
         switch (random) {
@@ -71,25 +96,21 @@ class WPFirstViewController: UIViewController {
 
 extension WPFirstViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let range = NSMakeRange(35, 300)
-        return (range.location + Int(arc4random_uniform(UInt32(range.length))))
+        return cellSizes.count
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(firstCellReuseID, forIndexPath: indexPath) as WPCollectionViewCell
-        randomPlaceholderImageForCell(collectionCell)
 
         return collectionCell
     }
+    
+    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
+        randomPlaceholderImageForCell(cell as WPCollectionViewCell);
+    }
 
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        let widthRange = NSMakeRange(35, 250)
-        let width = CGFloat((widthRange.location + Int(arc4random_uniform(UInt32(widthRange.length)))))
-
-        let heightRange = NSMakeRange(35, 300)
-        let height = CGFloat((heightRange.location + Int(arc4random_uniform(UInt32(heightRange.length)))))
-
-        return CGSizeMake(width, height)
+        return cellSizes[indexPath.item]
     }
 
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
