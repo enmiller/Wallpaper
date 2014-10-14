@@ -30,19 +30,34 @@ private struct WallpaperImageURLString {
 private let kWPPlaceRandomTextURLString = "http://loripsum.net/api/"
 private let ColorAlphaLimit: Double = 0.1
 
+public func == (lhs: WPTextOptions, rhs: WPTextOptions) -> Bool {
+    return lhs.value == rhs.value
+}
+
+public func == (lhs: WPHTMLOptions, rhs: WPHTMLOptions) -> Bool {
+    return lhs.value == rhs.value
+}
+
 public struct WPTextOptions : RawOptionSetType, BooleanType {
+    public typealias RawValue = UInt
     private var value: UInt = 0
-    init(_ value: UInt) { self.value = value }
+    public init(nilLiteral: ()) {}
+    public init(rawValue value: UInt) { self.value = value }
     public var boolValue: Bool { return self.value != 0 }
     public func toRaw() -> UInt { return self.value }
-    public static var allZeros: WPTextOptions { return self(0) }
-    public static func fromRaw(raw: UInt) -> WPTextOptions? { return self(raw) }
-    public static func fromMask(raw: UInt) -> WPTextOptions { return self(raw) }
-    public static func convertFromNilLiteral() -> WPTextOptions { return self(0) }
+    public static var allZeros: WPTextOptions { return self(rawValue: 0) }
+    public static func fromRaw(raw: UInt) -> WPTextOptions? { return self(rawValue: raw) }
+    public static func fromMask(raw: UInt) -> WPTextOptions { return self(rawValue: raw) }
+    public static func convertFromNilLiteral() -> WPTextOptions { return self(rawValue: 0) }
+    public var rawValue: RawValue {
+        get {
+            return self.value
+        }
+    }
 
-    static var None: WPTextOptions { return self(0) }
-    static var AllCaps: WPTextOptions { return self(1 << 0) }
-    static var Prude: WPTextOptions { return self(1 << 1) }
+    static var None: WPTextOptions { return self(rawValue: 0) }
+    static var AllCaps: WPTextOptions { return self(rawValue: 1 << 0) }
+    static var Prude: WPTextOptions { return self(rawValue: 1 << 1) }
 
     private struct Feature {
         static let AllCaps = "allcaps"
@@ -64,26 +79,33 @@ public struct WPTextOptions : RawOptionSetType, BooleanType {
 }
 
 public struct WPHTMLOptions : RawOptionSetType, BooleanType {
+    public typealias RawValue = UInt
     private var value: UInt = 0
-    init(_ value: UInt) { self.value = value }
+    public init(nilLiteral: ()) {}
+    public init(rawValue value: UInt) { self.value = value }
     public var boolValue: Bool { return self.value != 0 }
     public func toRaw() -> UInt { return self.value }
-    public static var allZeros: WPHTMLOptions { return self(0) }
-    public static func fromRaw(raw: UInt) -> WPHTMLOptions? { return self(raw) }
-    public static func fromMask(raw: UInt) -> WPHTMLOptions { return self(raw) }
-    public static func convertFromNilLiteral() -> WPHTMLOptions { return self(0) }
+    public static var allZeros: WPHTMLOptions { return self(rawValue: 0) }
+    public static func fromRaw(raw: UInt) -> WPHTMLOptions? { return self(rawValue: raw) }
+    public static func fromMask(raw: UInt) -> WPHTMLOptions { return self(rawValue: raw) }
+    public static func convertFromNilLiteral() -> WPHTMLOptions { return self(rawValue: 0) }
+    public var rawValue: RawValue {
+        get {
+            return self.value
+        }
+    }
 
-    static var None:             WPHTMLOptions { return self(0) }
-    static var EmphasisTags:     WPHTMLOptions { return self(1 << 0) }
-    static var AnchorTags:       WPHTMLOptions { return self(1 << 1) }
-    static var UnorderedList:    WPHTMLOptions { return self(1 << 2) }
-    static var OrderedList:      WPHTMLOptions { return self(1 << 3) }
-    static var DescriptionList:  WPHTMLOptions { return self(1 << 4) }
-    static var Blockquotes:      WPHTMLOptions { return self(1 << 5) }
-    static var CodeSamples:      WPHTMLOptions { return self(1 << 6) }
-    static var Headers:          WPHTMLOptions { return self(1 << 7) }
-    static var AllCaps:          WPHTMLOptions { return self(1 << 8) }
-    static var Prude:            WPHTMLOptions { return self(1 << 9) }
+    static var None:             WPHTMLOptions { return self(rawValue: 0) }
+    static var EmphasisTags:     WPHTMLOptions { return self(rawValue: 1 << 0) }
+    static var AnchorTags:       WPHTMLOptions { return self(rawValue: 1 << 1) }
+    static var UnorderedList:    WPHTMLOptions { return self(rawValue: 1 << 2) }
+    static var OrderedList:      WPHTMLOptions { return self(rawValue: 1 << 3) }
+    static var DescriptionList:  WPHTMLOptions { return self(rawValue: 1 << 4) }
+    static var Blockquotes:      WPHTMLOptions { return self(rawValue: 1 << 5) }
+    static var CodeSamples:      WPHTMLOptions { return self(rawValue: 1 << 6) }
+    static var Headers:          WPHTMLOptions { return self(rawValue: 1 << 7) }
+    static var AllCaps:          WPHTMLOptions { return self(rawValue: 1 << 8) }
+    static var Prude:            WPHTMLOptions { return self(rawValue: 1 << 9) }
 
     private struct Feature {
         static let Links = "link"
@@ -143,7 +165,7 @@ public class Wallpaper: NSObject {
 
         let urlString = NSString(format: path, "\(Int(size.width * screenScale))", "\(Int(size.height * screenScale))")
         let url = NSURL(string: urlString)
-        let request = NSURLRequest(URL: url)
+        let request = NSURLRequest(URL: url!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
                 let image = UIImage(data: data, scale: screenScale)
@@ -207,12 +229,12 @@ public extension Wallpaper {
 
         var urlString = kWPPlaceRandomTextURLString.stringByAppendingString(textOptions.toMaskString())
         urlString = urlString.stringByAppendingPathComponent("plaintext")
-        urlString = urlString.stringByAppendingPathComponent(paragraphLength.toRaw())
+        urlString = urlString.stringByAppendingPathComponent(paragraphLength.rawValue)
 
         let paragraphArgs = "\(numberOfParagraphs)"
         urlString = urlString.stringByAppendingPathComponent(paragraphArgs)
         let url = NSURL(string: urlString)
-        let request = NSURLRequest(URL: url)
+        let request = NSURLRequest(URL: url!)
          NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
                 let returnString = NSString(data: data, encoding: NSUTF8StringEncoding)
@@ -233,7 +255,7 @@ public extension Wallpaper {
         }
 
         let url = NSURL(string: hipsterPath)
-        let request = NSURLRequest(URL: url)
+        let request = NSURLRequest(URL: url!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
                 var dict: NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers, error: nil) as NSDictionary
@@ -264,10 +286,10 @@ public extension Wallpaper {
         let htmlURLString = kWPPlaceRandomTextURLString
         let optionsString = htmlOptions.toURLPathString()
 
-        let lengthURLString = htmlURLString + "\(paragraphLength.toRaw())"
+        let lengthURLString = htmlURLString + "\(paragraphLength.rawValue)"
         let fullURLString = lengthURLString + "/\(optionsString)"
 
-        return NSURL(string: fullURLString)
+        return NSURL(string: fullURLString)!
     }
 }
 

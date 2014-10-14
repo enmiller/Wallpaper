@@ -20,7 +20,7 @@ class WPSecondViewController: UIViewController {
     var collectionView: UICollectionView
     
     override init() {
-        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())!
 
         super.init(nibName: nil, bundle: nil)
 
@@ -95,7 +95,7 @@ extension WPSecondViewController: UICollectionViewDelegate, UICollectionViewData
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(secondCellReuseID, forIndexPath: indexPath) as UICollectionViewCell
         
-        let section = Section.fromRaw(indexPath.section)!
+        let section = Section(rawValue: indexPath.section)!
         switch (section) {
         case .BlueHues:
             blueHueColorForCell(collectionCell)
