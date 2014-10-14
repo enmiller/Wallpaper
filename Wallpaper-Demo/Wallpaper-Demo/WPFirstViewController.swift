@@ -21,7 +21,7 @@ class WPFirstViewController: UIViewController {
     var collectionView: UICollectionView
 
     override init() {
-        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())!
         cellSizes = WPFirstViewController.initialCellSizes()
         
         super.init(nibName: nil, bundle: nil)
@@ -63,7 +63,7 @@ class WPFirstViewController: UIViewController {
     }
 
     private func randomPlaceholderImageForCell(cell: WPCollectionViewCell) {
-        let random = ImageType.fromRaw(Int(arc4random_uniform(6)))!
+        let random = ImageType(rawValue: Int(arc4random_uniform(6)))!
         let size = cell.bounds.size
         let imageView = cell.imageView
         
