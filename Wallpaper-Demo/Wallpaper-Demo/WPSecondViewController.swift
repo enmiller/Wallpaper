@@ -93,7 +93,7 @@ extension WPSecondViewController: UICollectionViewDelegate, UICollectionViewData
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(secondCellReuseID, forIndexPath: indexPath) as UICollectionViewCell
+        var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(secondCellReuseID, forIndexPath: indexPath) as! UICollectionViewCell
         
         let section = Section(rawValue: indexPath.section)!
         switch (section) {
@@ -115,7 +115,7 @@ extension WPSecondViewController: UICollectionViewDelegate, UICollectionViewData
         return collectionCell
     }
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath!) -> CGSize {
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
         return CGSizeMake(40.0, 40.0)
     }
 

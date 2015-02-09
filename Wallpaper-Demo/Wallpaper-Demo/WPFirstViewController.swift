@@ -77,19 +77,19 @@ class WPFirstViewController: UIViewController {
 
         switch (random) {
         case .Kittens:
-            Wallpaper.placeKittenImage(size, completion)
+            Wallpaper.placeKittenImage(size, completion: completion)
         case .Placeholders:
-            Wallpaper.placeHolderImage(size, completion)
+            Wallpaper.placeHolderImage(size, completion: completion)
         case .Bacon:
-            Wallpaper.placeBaconImage(size, completion)
+            Wallpaper.placeBaconImage(size, completion: completion)
         case .GreyscaleKittens:
-            Wallpaper.placeKittenGreyscaleImage(size, completion)
+            Wallpaper.placeKittenGreyscaleImage(size, completion: completion)
         case .Random:
-            Wallpaper.placeRandomImage(size, completion)
+            Wallpaper.placeRandomImage(size, completion: completion)
         case .Downey:
-            Wallpaper.placeDowneyImage(size, completion)
+            Wallpaper.placeDowneyImage(size, completion: completion)
         case .GreyscaleRandom:
-            Wallpaper.placeRandomGreyscaleImage(size, completion)
+            Wallpaper.placeRandomGreyscaleImage(size, completion: completion)
         }
     }
 }
@@ -100,13 +100,13 @@ extension WPFirstViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(firstCellReuseID, forIndexPath: indexPath) as WPCollectionViewCell
+        var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(firstCellReuseID, forIndexPath: indexPath) as! WPCollectionViewCell
 
         return collectionCell
     }
     
     func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        randomPlaceholderImageForCell(cell as WPCollectionViewCell);
+        randomPlaceholderImageForCell(cell as! WPCollectionViewCell);
     }
 
     func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {

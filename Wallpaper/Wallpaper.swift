@@ -164,7 +164,7 @@ public class Wallpaper: NSObject {
         let screenScale: CGFloat = UIScreen.mainScreen().scale
 
         let urlString = NSString(format: path, "\(Int(size.width * screenScale))", "\(Int(size.height * screenScale))")
-        let url = NSURL(string: urlString)
+        let url = NSURL(string: urlString as! String)
         let request = NSURLRequest(URL: url!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
@@ -238,7 +238,7 @@ public extension Wallpaper {
          NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
                 let returnString = NSString(data: data, encoding: NSUTF8StringEncoding)
-                completion(placeText: returnString)
+                completion(placeText: returnString as? String)
             } else {
                 println("\(__FUNCTION__) Wallpaper Error: \(error)")
                 completion(placeText: nil)
@@ -258,8 +258,8 @@ public extension Wallpaper {
         let request = NSURLRequest(URL: url!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
-                var dict: NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers, error: nil) as NSDictionary
-                let returnString = dict["text"] as String
+                var dict: NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers, error: nil) as! NSDictionary
+                let returnString = dict["text"] as! String
                 completion(hipsterIpsum: returnString)
             } else {
                 println("\(__FUNCTION__) Wallpaper Error: \(error)")
@@ -274,7 +274,7 @@ public extension Wallpaper {
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
                 let returnString = NSString(data: data, encoding: NSUTF8StringEncoding)
-                completion(placeText: returnString)
+                completion(placeText: returnString as? String)
             } else {
                 println("\(__FUNCTION__) Wallpaper Error: \(error)")
                 completion(placeText: nil)
@@ -364,7 +364,8 @@ private extension Wallpaper {
     }
 
     private class func randomFloat(range: NSRange) -> CGFloat {
-        return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) + randomPercentage())
+        
+        return ((CGFloat(range.location) + CGFloat(arc4random_uniform(UInt32(range.length)))) + randomPercentage())
     }
 
     private class func randomPercentage() -> CGFloat {
@@ -372,6 +373,6 @@ private extension Wallpaper {
     }
 
     private class func randomPercentage(range: NSRange) -> CGFloat {
-        return (CGFloat(range.location + arc4random_uniform(UInt32(range.length))) / 100.0)
+        return ((CGFloat(range.location) + CGFloat(arc4random_uniform(UInt32(range.length)))) / 100.0)
     }
 }
