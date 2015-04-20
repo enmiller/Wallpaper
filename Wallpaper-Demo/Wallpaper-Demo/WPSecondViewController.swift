@@ -19,7 +19,7 @@ class WPSecondViewController: UIViewController {
     
     var collectionView: UICollectionView
     
-    override init() {
+    init() {
         collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
 
         super.init(nibName: nil, bundle: nil)

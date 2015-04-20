@@ -20,7 +20,7 @@ class WPFirstViewController: UIViewController {
     
     var collectionView: UICollectionView
 
-    override init() {
+    init() {
         collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
         cellSizes = WPFirstViewController.initialCellSizes()
         
