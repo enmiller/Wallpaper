@@ -18,161 +18,154 @@ public enum WPTextParagraphLength : String {
 }
 
 private struct WallpaperImageURLString {
-    static let PlaceKitten = "http://placekitten.com/%@/%@"
-    static let PlaceKittenGreyscale = "http://placekitten.com/g/%@/%@"
-    static let Bacon = "http://baconmockup.com/%@/%@/"
-    static let PlaceHolder = "http://placehold.it/%@x%@/"
-    static let Random = "http://lorempixel.com/%@/%@/"
-    static let RandomGreyscale = "http://lorempixel.com/g/%@/%@/"
-    static let Downey = "http://rdjpg.com/%@/%@/"
+    static let PlaceKitten: NSString = "http://placekitten.com/%@/%@"
+    static let PlaceKittenGreyscale: NSString = "http://placekitten.com/g/%@/%@"
+    static let Bacon: NSString = "http://baconmockup.com/%@/%@/"
+    static let PlaceHolder: NSString = "http://placehold.it/%@x%@/"
+    static let Random: NSString = "http://lorempixel.com/%@/%@/"
+    static let RandomGreyscale: NSString = "http://lorempixel.com/g/%@/%@/"
+    static let Downey: NSString = "http://rdjpg.com/%@/%@/"
 }
 
 private let kWPPlaceRandomTextURLString = "http://loripsum.net/api/"
 private let ColorAlphaLimit: Double = 0.1
 
 public func == (lhs: WPTextOptions, rhs: WPTextOptions) -> Bool {
-    return lhs.value == rhs.value
+    return lhs.rawValue == rhs.rawValue
 }
 
 public func == (lhs: WPHTMLOptions, rhs: WPHTMLOptions) -> Bool {
-    return lhs.value == rhs.value
+    return lhs.rawValue == rhs.rawValue
 }
 
-public struct WPTextOptions : RawOptionSetType, BooleanType {
-    public typealias RawValue = UInt
-    private var value: UInt = 0
-    public init(nilLiteral: ()) {}
-    public init(rawValue value: UInt) { self.value = value }
-    public var boolValue: Bool { return self.value != 0 }
-    public func toRaw() -> UInt { return self.value }
-    public static var allZeros: WPTextOptions { return self(rawValue: 0) }
-    public static func fromRaw(raw: UInt) -> WPTextOptions? { return self(rawValue: raw) }
-    public static func fromMask(raw: UInt) -> WPTextOptions { return self(rawValue: raw) }
-    public static func convertFromNilLiteral() -> WPTextOptions { return self(rawValue: 0) }
-    public var rawValue: RawValue {
+public struct WPTextOptions: OptionSetType, BooleanType {
+    public let rawValue: UInt
+    public var boolValue: Bool {
         get {
-            return self.value
+            return self.rawValue != 0
         }
     }
-
-    static var None: WPTextOptions { return self(rawValue: 0) }
-    static var AllCaps: WPTextOptions { return self(rawValue: 1 << 0) }
-    static var Prude: WPTextOptions { return self(rawValue: 1 << 1) }
-
-    private struct Feature {
-        static let AllCaps = "allcaps"
-        static let PrudeText = "prude"
+    static let None = WPTextOptions(rawValue: 0)
+    static let AllCaps = WPTextOptions(rawValue: 1)
+    static let Prude = WPTextOptions(rawValue: 1 << 1)
+    
+    public init(rawValue: UInt) {
+        self.rawValue = rawValue
     }
-
+    
+    private enum Feature: String {
+        case AllCaps = "allcaps"
+        case PrudeText = "prude"
+    }
+    
     public func toMaskString() -> String {
-        var urlString = ""
-        if (self & .AllCaps) {
-            urlString = urlString.stringByAppendingPathComponent(Feature.AllCaps)
+        var urlString: NSString = ""
+        if self.contains(.AllCaps) {
+            urlString = urlString.stringByAppendingPathComponent(Feature.AllCaps.rawValue)
         }
-
-        if (self & .Prude) {
-            urlString = urlString.stringByAppendingPathComponent(Feature.PrudeText)
+        
+        if self.contains(.Prude) {
+            urlString = urlString.stringByAppendingPathComponent(Feature.PrudeText.rawValue)
         }
-
-        return urlString
+        
+        return urlString as String
     }
 }
 
-public struct WPHTMLOptions : RawOptionSetType, BooleanType {
-    public typealias RawValue = UInt
-    private var value: UInt = 0
-    public init(nilLiteral: ()) {}
-    public init(rawValue value: UInt) { self.value = value }
-    public var boolValue: Bool { return self.value != 0 }
-    public func toRaw() -> UInt { return self.value }
-    public static var allZeros: WPHTMLOptions { return self(rawValue: 0) }
-    public static func fromRaw(raw: UInt) -> WPHTMLOptions? { return self(rawValue: raw) }
-    public static func fromMask(raw: UInt) -> WPHTMLOptions { return self(rawValue: raw) }
-    public static func convertFromNilLiteral() -> WPHTMLOptions { return self(rawValue: 0) }
-    public var rawValue: RawValue {
+public struct WPHTMLOptions : OptionSetType, BooleanType {
+    public let rawValue: UInt
+    public var boolValue: Bool {
         get {
-            return self.value
+            return self.rawValue != 0
         }
     }
+    
+    static let None = WPHTMLOptions(rawValue: 0)
+    static let EmphasisTags = WPHTMLOptions(rawValue: 1)
+    static let AnchorTags = WPHTMLOptions(rawValue: 1 << 1)
+    static var UnorderedList = WPHTMLOptions(rawValue: 1 << 2)
+    static var OrderedList = WPHTMLOptions(rawValue: 1 << 3)
+    static var DescriptionList = WPHTMLOptions(rawValue: 1 << 4)
+    static var Blockquotes = WPHTMLOptions(rawValue: 1 << 5)
+    static var CodeSamples = WPHTMLOptions(rawValue: 1 << 6)
+    static var Headers = WPHTMLOptions(rawValue: 1 << 7)
+    static var AllCaps = WPHTMLOptions(rawValue: 1 << 8)
+    static var Prude = WPHTMLOptions(rawValue: 1 << 9)
+    
+    public init(rawValue: UInt) {
+        self.rawValue = rawValue
+    }
 
-    static var None:             WPHTMLOptions { return self(rawValue: 0) }
-    static var EmphasisTags:     WPHTMLOptions { return self(rawValue: 1 << 0) }
-    static var AnchorTags:       WPHTMLOptions { return self(rawValue: 1 << 1) }
-    static var UnorderedList:    WPHTMLOptions { return self(rawValue: 1 << 2) }
-    static var OrderedList:      WPHTMLOptions { return self(rawValue: 1 << 3) }
-    static var DescriptionList:  WPHTMLOptions { return self(rawValue: 1 << 4) }
-    static var Blockquotes:      WPHTMLOptions { return self(rawValue: 1 << 5) }
-    static var CodeSamples:      WPHTMLOptions { return self(rawValue: 1 << 6) }
-    static var Headers:          WPHTMLOptions { return self(rawValue: 1 << 7) }
-    static var AllCaps:          WPHTMLOptions { return self(rawValue: 1 << 8) }
-    static var Prude:            WPHTMLOptions { return self(rawValue: 1 << 9) }
-
-    private struct Feature {
-        static let Links = "link"
-        static let Emphasis = "decorate"
-        static let UnorderedList = "u1"
-        static let OrderedList = "o1"
-        static let DescriptionList = "d1"
-        static let Blockquotes = "bq"
-        static let CodeSamples = "code"
-        static let Headers = "headers"
-        static let AllCaps = "allcaps"
-        static let PrudeText = "prude"
+    private enum Feature: String {
+        case Links = "link"
+        case Emphasis = "decorate"
+        case UnorderedList = "u1"
+        case OrderedList = "o1"
+        case DescriptionList = "d1"
+        case Blockquotes = "bq"
+        case CodeSamples = "code"
+        case Headers = "headers"
+        case AllCaps = "allcaps"
+        case PrudeText = "prude"
     }
 
     public func toURLPathString() -> String {
-        var optionsString: String = ""
+        var optionsString: NSString = ""
 
-        if (self & .AnchorTags) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Links)
+        if self.contains(WPHTMLOptions.AnchorTags) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Links.rawValue)
         }
-        if (self & .EmphasisTags) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Emphasis)
+        if self.contains(WPHTMLOptions.EmphasisTags) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Emphasis.rawValue)
         }
-        if (self & .UnorderedList) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.UnorderedList)
+        if self.contains(WPHTMLOptions.UnorderedList) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.UnorderedList.rawValue)
         }
-        if (self & .OrderedList) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.OrderedList)
+        if self.contains(WPHTMLOptions.OrderedList) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.OrderedList.rawValue)
         }
-        if (self & .DescriptionList) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.DescriptionList)
+        if self.contains(WPHTMLOptions.DescriptionList) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.DescriptionList.rawValue)
         }
-        if (self & .Blockquotes) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Blockquotes)
+        if self.contains(WPHTMLOptions.Blockquotes) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Blockquotes.rawValue)
         }
-        if (self & .CodeSamples) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.CodeSamples)
+        if self.contains(WPHTMLOptions.CodeSamples) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.CodeSamples.rawValue)
         }
-        if (self & .Headers) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Headers)
+        if self.contains(WPHTMLOptions.Headers) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.Headers.rawValue)
         }
-        if (self & .AllCaps) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.AllCaps)
+        if self.contains(WPHTMLOptions.AllCaps) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.AllCaps.rawValue)
         }
-        if (self & .Prude) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.PrudeText)
+        if self.contains(WPHTMLOptions.Prude) {
+            optionsString = optionsString.stringByAppendingPathComponent(Feature.PrudeText.rawValue)
         }
 
-        return optionsString
+        return optionsString as String
     }
 }
 
 public class Wallpaper: NSObject {
 
-    private class func requestImage(path: String, size: CGSize, completion: (image: UIImage?) -> ()) {
+    private class func requestImage(path: String, size: CGSize, completion: (UIImage?) -> ()) {
         let screenScale: CGFloat = UIScreen.mainScreen().scale
 
         let urlString = NSString(format: path, "\(Int(size.width * screenScale))", "\(Int(size.height * screenScale))")
-        let url = NSURL(string: urlString as! String)
+        let url = NSURL(string: urlString as String)
         let request = NSURLRequest(URL: url!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
-                let image = UIImage(data: data, scale: screenScale)
-                completion(image: image);
+                if let unwrappedData = data {
+                    let image = UIImage(data: unwrappedData, scale: screenScale)
+                    completion(image)
+                } else {
+                    completion(nil)
+                }
             } else {
-                println("\(__FUNCTION__) Wallpaper Error: \(error)")
-                completion(image: nil)
+                print("\(__FUNCTION__) Wallpaper Error: \(error)")
+                completion(nil)
             }
         }
     }
@@ -182,19 +175,19 @@ public class Wallpaper: NSObject {
 public extension Wallpaper {
 
     public class func placeKittenImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.PlaceKitten, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.PlaceKitten as String, size: size, completion: completion)
     }
 
     public class func placeKittenGreyscaleImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.PlaceKittenGreyscale, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.PlaceKittenGreyscale as String, size: size, completion: completion)
     }
 
     public class func placeBaconImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.Bacon, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.Bacon as String, size: size, completion: completion)
     }
 
     public class func placeHolderImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.PlaceHolder, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.PlaceHolder as String, size: size, completion: completion)
     }
 
     public class func placeRandomImage(size: CGSize, category: String, completion: (image: UIImage?) -> ()) {
@@ -208,15 +201,15 @@ public extension Wallpaper {
     }
 
     public class func placeRandomImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.Random, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.Random as String, size: size, completion: completion)
     }
 
     public class func placeRandomGreyscaleImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.RandomGreyscale, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.RandomGreyscale as String, size: size, completion: completion)
     }
 
     public class func placeDowneyImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.Downey, size: size, completion: completion)
+        requestImage(WallpaperImageURLString.Downey as String, size: size, completion: completion)
     }
 }
 
@@ -224,60 +217,80 @@ public extension Wallpaper {
 //MARK: - Text
 public extension Wallpaper {
 
-    public class func placeText(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, textOptions: WPTextOptions, completion: (placeText: String?) -> ()) {
+    public class func placeText(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, textOptions: WPTextOptions, completion: (String?) -> ()) {
         assert(numberOfParagraphs > 0, "Number of paragraphs is invalid")
 
-        var urlString = kWPPlaceRandomTextURLString.stringByAppendingString(textOptions.toMaskString())
+        var urlString: NSString = kWPPlaceRandomTextURLString.stringByAppendingString(textOptions.toMaskString())
         urlString = urlString.stringByAppendingPathComponent("plaintext")
         urlString = urlString.stringByAppendingPathComponent(paragraphLength.rawValue)
 
         let paragraphArgs = "\(numberOfParagraphs)"
         urlString = urlString.stringByAppendingPathComponent(paragraphArgs)
-        let url = NSURL(string: urlString)
+        let url = NSURL(string: urlString as String)
         let request = NSURLRequest(URL: url!)
-         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
+        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
-                let returnString = NSString(data: data, encoding: NSUTF8StringEncoding)
-                completion(placeText: returnString as? String)
+                if let unwrappedData = data {
+                    let returnString = NSString(data: unwrappedData, encoding: NSUTF8StringEncoding)
+                    completion(returnString as? String)
+                } else {
+                    completion(nil)
+                }
             } else {
-                println("\(__FUNCTION__) Wallpaper Error: \(error)")
-                completion(placeText: nil)
+                print("\(__FUNCTION__) Wallpaper Error: \(error)")
+                completion(nil)
             }
         }
     }
 
-    public class func placeHipsterIpsum(numberOfParagraphs: Int, shotOfLatin: Bool, completion: (hipsterIpsum: String?) -> ()) {
+    public class func placeHipsterIpsum(numberOfParagraphs: Int, shotOfLatin: Bool, completion: (String?) -> ()) {
         var hipsterPath: String = "http://hipsterjesus.com/api?paras=\(numberOfParagraphs)&html=false"
         if shotOfLatin {
             hipsterPath += "&type=hipster-latin"
         } else {
             hipsterPath += "&type=hipster-centric"
         }
-
+        
         let url = NSURL(string: hipsterPath)
         let request = NSURLRequest(URL: url!)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
-                var dict: NSDictionary = NSJSONSerialization.JSONObjectWithData(data, options: .MutableContainers, error: nil) as! NSDictionary
-                let returnString = dict["text"] as! String
-                completion(hipsterIpsum: returnString)
+                if let unwrappedData = data {
+                    
+                    do {
+                        if let dict = try NSJSONSerialization.JSONObjectWithData(unwrappedData, options: NSJSONReadingOptions(rawValue: 0)) as? [String : String] {
+                            let returnString = dict["text"]
+                            completion(returnString)
+                        } else {
+                            completion(nil)
+                        }
+                    } catch {
+                        
+                    }
+                } else {
+                    completion(nil)
+                }
             } else {
-                println("\(__FUNCTION__) Wallpaper Error: \(error)")
-                completion(hipsterIpsum: nil)
+                print("\(__FUNCTION__) Wallpaper Error: \(error)")
+                completion(nil)
             }
         }
     }
 
-    public class func placeHTML(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, options: WPHTMLOptions, completion: (placeText: String?) -> ()) -> () {
+    public class func placeHTML(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, options: WPHTMLOptions, completion: (String?) -> ()) -> () {
         let htmlURL = placeURLForHTML(paragraphLength, htmlOptions: options)
         let request = NSURLRequest(URL: htmlURL)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
             if error == nil {
-                let returnString = NSString(data: data, encoding: NSUTF8StringEncoding)
-                completion(placeText: returnString as? String)
+                if let unwrappedData = data {
+                    let returnString = NSString(data: unwrappedData, encoding: NSUTF8StringEncoding)
+                    completion(returnString as? String)
+                } else {
+                    completion(nil)
+                }
             } else {
-                println("\(__FUNCTION__) Wallpaper Error: \(error)")
-                completion(placeText: nil)
+                print("\(__FUNCTION__) Wallpaper Error: \(error)")
+                completion(nil)
             }
         }
     }

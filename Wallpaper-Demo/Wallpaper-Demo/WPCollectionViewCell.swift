@@ -20,7 +20,7 @@ class WPCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         backgroundColor = UIColor.lightGrayColor()
         imageView.frame = bounds
-        imageView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
+        imageView.autoresizingMask = [.FlexibleWidth, .FlexibleHeight]
         addSubview(imageView)
     }
     

@@ -93,7 +93,7 @@ extension WPSecondViewController: UICollectionViewDelegate, UICollectionViewData
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(secondCellReuseID, forIndexPath: indexPath) as! UICollectionViewCell
+        let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(secondCellReuseID, forIndexPath: indexPath)
         
         let section = Section(rawValue: indexPath.section)!
         switch (section) {
