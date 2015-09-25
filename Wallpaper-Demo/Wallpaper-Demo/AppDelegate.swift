@@ -18,8 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.mainScreen().bounds)
         
         
-        var firstVC = WPFirstViewController()
-        var secondVC = WPSecondViewController()
+        let firstVC = WPFirstViewController()
+        let secondVC = WPSecondViewController()
         tabBarController = UITabBarController()
         tabBarController!.viewControllers = [firstVC, secondVC]
         self.window!.rootViewController = tabBarController

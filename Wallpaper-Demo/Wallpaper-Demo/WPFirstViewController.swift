@@ -35,7 +35,7 @@ class WPFirstViewController: UIViewController {
         let range = NSMakeRange(35, 300)
         let end: Int = (range.location + Int(arc4random_uniform(UInt32(range.length))))
         
-        for index in 0...end {
+        for _ in 0...end {
             let widthRange = NSMakeRange(35, 250)
             let width = CGFloat((widthRange.location + Int(arc4random_uniform(UInt32(widthRange.length)))))
             
@@ -100,7 +100,7 @@ extension WPFirstViewController: UICollectionViewDelegate, UICollectionViewDataS
     }
 
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        var collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(firstCellReuseID, forIndexPath: indexPath) as! WPCollectionViewCell
+        let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(firstCellReuseID, forIndexPath: indexPath) as! WPCollectionViewCell
 
         return collectionCell
     }

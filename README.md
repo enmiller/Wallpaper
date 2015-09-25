@@ -60,7 +60,7 @@ Wallpaper.placeHipsterIpsum(numberOfParagraphs: 3, shotOfLatin: true) { hipsterT
 The Wallpaper core was built dependency-free to make it as easy as possible to drop into your project. Simply drop `Wallpaper.swift` and away you go!
 
 ##Notes:
-* Now compiled for Swift 1.2
+* Now compiled for Swift 2
 
 ##Known Issues
 
