@@ -38,7 +38,7 @@ public func == (lhs: WPHTMLOptions, rhs: WPHTMLOptions) -> Bool {
     return lhs.rawValue == rhs.rawValue
 }
 
-public struct WPTextOptions: OptionSetType, BooleanType {
+public struct WPTextOptions: OptionSet {
     public let rawValue: UInt
     public var boolValue: Bool {
         get {
@@ -59,20 +59,20 @@ public struct WPTextOptions: OptionSetType, BooleanType {
     }
     
     public func toMaskString() -> String {
-        var urlString: NSString = ""
+        var urlString: String = ""
         if self.contains(.AllCaps) {
-            urlString = urlString.stringByAppendingPathComponent(Feature.AllCaps.rawValue)
+            urlString = (urlString as NSString).appendingPathComponent(Feature.AllCaps.rawValue)
         }
         
         if self.contains(.Prude) {
-            urlString = urlString.stringByAppendingPathComponent(Feature.PrudeText.rawValue)
+            urlString = (urlString as NSString).appendingPathComponent(Feature.PrudeText.rawValue)
         }
         
-        return urlString as String
+        return urlString
     }
 }
 
-public struct WPHTMLOptions : OptionSetType, BooleanType {
+public struct WPHTMLOptions : OptionSet {
     public let rawValue: UInt
     public var boolValue: Bool {
         get {
@@ -110,52 +110,52 @@ public struct WPHTMLOptions : OptionSetType, BooleanType {
     }
     
     public func toURLPathString() -> String {
-        var optionsString: NSString = ""
+        var optionsString: String = ""
         
         if self.contains(WPHTMLOptions.AnchorTags) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Links.rawValue)
+            optionsString = (optionsString as NSString).appendingPathComponent(Feature.Links.rawValue)
         }
         if self.contains(WPHTMLOptions.EmphasisTags) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Emphasis.rawValue)
+            optionsString = (optionsString as NSString).appendingPathComponent(Feature.Emphasis.rawValue)
         }
         if self.contains(WPHTMLOptions.UnorderedList) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.UnorderedList.rawValue)
+            optionsString = (optionsString as NSString).appendingPathComponent(Feature.UnorderedList.rawValue)
         }
         if self.contains(WPHTMLOptions.OrderedList) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.OrderedList.rawValue)
+            optionsString = (optionsString as NSString).appendingPathComponent(Feature.OrderedList.rawValue)
         }
         if self.contains(WPHTMLOptions.DescriptionList) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.DescriptionList.rawValue)
+            optionsString = (optionsString as NSString).appendingPathComponent(Feature.DescriptionList.rawValue)
         }
         if self.contains(WPHTMLOptions.Blockquotes) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Blockquotes.rawValue)
+            optionsString = (optionsString as NSString).appendingPathComponent(Feature.Blockquotes.rawValue)
         }
         if self.contains(WPHTMLOptions.CodeSamples) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.CodeSamples.rawValue)
+            optionsString = (optionsString as NSString).appendingPathComponent(Feature.CodeSamples.rawValue)
         }
         if self.contains(WPHTMLOptions.Headers) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.Headers.rawValue)
+            optionsString = (optionsString as NSString).appendingPathComponent(Feature.Headers.rawValue)
         }
         if self.contains(WPHTMLOptions.AllCaps) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.AllCaps.rawValue)
+            optionsString = (optionsString as NSString).appendingPathComponent(Feature.AllCaps.rawValue)
         }
         if self.contains(WPHTMLOptions.Prude) {
-            optionsString = optionsString.stringByAppendingPathComponent(Feature.PrudeText.rawValue)
+            optionsString = (optionsString as NSString).appendingPathComponent(Feature.PrudeText.rawValue)
         }
         
-        return optionsString as String
+        return optionsString
     }
 }
 
 public class Wallpaper: NSObject {
     
-    private class func requestImage(path: String, size: CGSize, completion: (UIImage?) -> ()) {
-        let screenScale: CGFloat = UIScreen.mainScreen().scale
+    fileprivate class func requestImage(at path: String, size: CGSize, completion: @escaping (UIImage?) -> (Void)) {
+        let screenScale: CGFloat = UIScreen.main.scale
         
-        let urlString = NSString(format: path, "\(Int(size.width * screenScale))", "\(Int(size.height * screenScale))")
-        let url = NSURL(string: urlString as String)
-        let request = NSURLRequest(URL: url!)
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
+        let urlString = String(format: path, "\(Int(size.width * screenScale))", "\(Int(size.height * screenScale))")
+        let url = URL(string: urlString)
+        let request = URLRequest(url: url!)
+        NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue.main) { (response, data, error) -> Void in
             if error == nil {
                 if let unwrappedData = data {
                     let image = UIImage(data: unwrappedData, scale: screenScale)
@@ -164,7 +164,7 @@ public class Wallpaper: NSObject {
                     completion(nil)
                 }
             } else {
-                print("\(__FUNCTION__) Wallpaper Error: \(error)")
+                print("\(#function) Wallpaper Error: \(error)")
                 completion(nil)
             }
         }
@@ -174,42 +174,42 @@ public class Wallpaper: NSObject {
 //MARK: - Images
 public extension Wallpaper {
     
-    public class func placeKittenImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.PlaceKitten as String, size: size, completion: completion)
+    public class func placeKittenImage(size: CGSize, completion: @escaping (_ image: UIImage?) -> (Void)) {
+        requestImage(at: WallpaperImageURLString.PlaceKitten as String, size: size, completion: completion)
     }
     
-    public class func placeKittenGreyscaleImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.PlaceKittenGreyscale as String, size: size, completion: completion)
+    public class func placeKittenGreyscaleImage(size: CGSize, completion: @escaping (_ image: UIImage?) -> (Void)) {
+        requestImage(at: WallpaperImageURLString.PlaceKittenGreyscale as String, size: size, completion: completion)
     }
     
-    public class func placeBaconImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.Bacon as String, size: size, completion: completion)
+    public class func placeBaconImage(size: CGSize, completion: @escaping (_ image: UIImage?) -> (Void)) {
+        requestImage(at: WallpaperImageURLString.Bacon as String, size: size, completion: completion)
     }
     
-    public class func placeHolderImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.PlaceHolder as String, size: size, completion: completion)
+    public class func placeHolderImage(size: CGSize, completion: @escaping (_ image: UIImage?) -> (Void)) {
+        requestImage(at: WallpaperImageURLString.PlaceHolder as String, size: size, completion: completion)
     }
     
-    public class func placeRandomImage(size: CGSize, category: String, completion: (image: UIImage?) -> ()) {
-        let path = WallpaperImageURLString.Random.stringByAppendingPathComponent(category)
-        requestImage(path, size: size, completion: completion)
+    public class func placeRandomImage(size: CGSize, category: String, completion: @escaping (_ image: UIImage?) -> (Void)) {
+        let path = (WallpaperImageURLString.Random as NSString).appendingPathComponent(category)
+        requestImage(at: path, size: size, completion: completion)
     }
     
-    public class func placeRandomGreyscaleImage(size: CGSize, category: String, completion: (image: UIImage?) -> ()) {
-        let path = WallpaperImageURLString.RandomGreyscale.stringByAppendingPathComponent(category)
-        requestImage(path, size: size, completion: completion)
+    public class func placeRandomGreyscaleImage(size: CGSize, category: String, completion: @escaping (_ image: UIImage?) -> (Void)) {
+        let path = (WallpaperImageURLString.RandomGreyscale as NSString).appendingPathComponent(category)
+        requestImage(at: path, size: size, completion: completion)
     }
     
-    public class func placeRandomImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.Random as String, size: size, completion: completion)
+    public class func placeRandomImage(size: CGSize, completion: @escaping (_ image: UIImage?) -> (Void)) {
+        requestImage(at: WallpaperImageURLString.Random as String, size: size, completion: completion)
     }
     
-    public class func placeRandomGreyscaleImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.RandomGreyscale as String, size: size, completion: completion)
+    public class func placeRandomGreyscaleImage(size: CGSize, completion: @escaping (_ image: UIImage?) -> (Void)) {
+        requestImage(at: WallpaperImageURLString.RandomGreyscale as String, size: size, completion: completion)
     }
     
-    public class func placeDowneyImage(size: CGSize, completion: (image: UIImage?) -> ()) {
-        requestImage(WallpaperImageURLString.Downey as String, size: size, completion: completion)
+    public class func placeDowneyImage(size: CGSize, completion: @escaping (_ image: UIImage?) -> (Void)) {
+        requestImage(at: WallpaperImageURLString.Downey as String, size: size, completion: completion)
     }
 }
 
@@ -217,33 +217,33 @@ public extension Wallpaper {
 //MARK: - Text
 public extension Wallpaper {
     
-    public class func placeText(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, textOptions: WPTextOptions, completion: (String?) -> ()) {
+    public class func placeText(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, textOptions: WPTextOptions, completion: @escaping (String?) -> (Void)) {
         assert(numberOfParagraphs > 0, "Number of paragraphs is invalid")
         
-        var urlString: NSString = kWPPlaceRandomTextURLString.stringByAppendingString(textOptions.toMaskString())
-        urlString = urlString.stringByAppendingPathComponent("plaintext")
-        urlString = urlString.stringByAppendingPathComponent(paragraphLength.rawValue)
+        var urlString: String = kWPPlaceRandomTextURLString.appending(textOptions.toMaskString())
+        urlString = (urlString as NSString).appendingPathComponent("plaintext")
+        urlString = (urlString as NSString).appendingPathComponent(paragraphLength.rawValue)
         
         let paragraphArgs = "\(numberOfParagraphs)"
-        urlString = urlString.stringByAppendingPathComponent(paragraphArgs)
-        let url = NSURL(string: urlString as String)
-        let request = NSURLRequest(URL: url!)
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
+        urlString = (urlString as NSString).appendingPathComponent(paragraphArgs)
+        let url = URL(string: urlString as String)
+        let request = URLRequest(url: url!)
+        NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue.main) { (response, data, error) -> Void in
             if error == nil {
                 if let unwrappedData = data {
-                    let returnString = NSString(data: unwrappedData, encoding: NSUTF8StringEncoding)
-                    completion(returnString as? String)
+                    let returnString = String(data: unwrappedData, encoding: .utf8)
+                    completion(returnString)
                 } else {
                     completion(nil)
                 }
             } else {
-                print("\(__FUNCTION__) Wallpaper Error: \(error)")
+                print("\(#function) Wallpaper Error: \(error)")
                 completion(nil)
             }
         }
     }
     
-    public class func placeHipsterIpsum(numberOfParagraphs: Int, shotOfLatin: Bool, completion: (String?) -> ()) {
+    public class func placeHipsterIpsum(numberOfParagraphs: Int, shotOfLatin: Bool, completion: @escaping (String?) -> (Void)) {
         var hipsterPath: String = "http://hipsterjesus.com/api?paras=\(numberOfParagraphs)&html=false"
         if shotOfLatin {
             hipsterPath += "&type=hipster-latin"
@@ -251,12 +251,12 @@ public extension Wallpaper {
             hipsterPath += "&type=hipster-centric"
         }
         
-        let url = NSURL(string: hipsterPath)
-        let request = NSURLRequest(URL: url!)
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
+        let url = URL(string: hipsterPath)
+        let request = URLRequest(url: url!)
+        NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue.main) { (response, data, error) -> Void in
             if error == nil {
                 if let unwrappedData = data {
-                    if let JSONDict = try? NSJSONSerialization.JSONObjectWithData(unwrappedData, options: NSJSONReadingOptions(rawValue: 0)),
+                    if let JSONDict = try? JSONSerialization.jsonObject(with: unwrappedData, options: []),
                         let dict = JSONDict as? [String : AnyObject]
                     {
                         let returnString = dict["text"] as? String
@@ -266,45 +266,45 @@ public extension Wallpaper {
                     }
                 }
             } else {
-                print("\(__FUNCTION__) Wallpaper Error: \(error)")
+                print("\(#function) Wallpaper Error: \(error)")
                 completion(nil)
             }
         }
     }
     
-    public class func placeHTML(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, options: WPHTMLOptions, completion: (String?) -> ()) -> () {
-        let htmlURL = placeURLForHTML(paragraphLength, htmlOptions: options)
-        let request = NSURLRequest(URL: htmlURL)
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response, data, error) -> Void in
+    public class func placeHTML(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, options: WPHTMLOptions, completion: @escaping (String?) -> (Void)) -> () {
+        let htmlURL = placeURLForHTML(paragraphLength: paragraphLength, htmlOptions: options)
+        let request = URLRequest(url: htmlURL)
+        NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue.main) { (response, data, error) -> Void in
             if error == nil {
                 if let unwrappedData = data {
-                    let returnString = NSString(data: unwrappedData, encoding: NSUTF8StringEncoding)
-                    completion(returnString as? String)
+                    let returnString = String(data: unwrappedData, encoding: .utf8)
+                    completion(returnString)
                 } else {
                     completion(nil)
                 }
             } else {
-                print("\(__FUNCTION__) Wallpaper Error: \(error)")
+                print("\(#function) Wallpaper Error: \(error)")
                 completion(nil)
             }
         }
     }
     
-    public class func placeURLForHTML(paragraphLength: WPTextParagraphLength, htmlOptions: WPHTMLOptions) -> NSURL {
+    public class func placeURLForHTML(paragraphLength: WPTextParagraphLength, htmlOptions: WPHTMLOptions) -> URL {
         let htmlURLString = kWPPlaceRandomTextURLString
         let optionsString = htmlOptions.toURLPathString()
         
         let lengthURLString = htmlURLString + "\(paragraphLength.rawValue)"
         let fullURLString = lengthURLString + "/\(optionsString)"
         
-        return NSURL(string: fullURLString)!
+        return URL(string: fullURLString)!
     }
 }
 
 //MARK: - Colors
 public extension Wallpaper {
     
-    public class func placeRandomColorWithHue(hue: CGFloat) -> UIColor {
+    public class func placeRandomColorWithHue(_ hue: CGFloat) -> UIColor {
         assert(hue <= 1 && hue >= 0, "Hue value must be between 0 and 1")
         
         let upperLimit = 100
@@ -312,8 +312,8 @@ public extension Wallpaper {
         
         let percentRange = NSMakeRange(lowerLimit, upperLimit - lowerLimit)
         
-        let s = randomPercentage(percentRange)
-        let b = randomPercentage(percentRange)
+        let s = randomPercentage(in: percentRange)
+        let b = randomPercentage(in: percentRange)
         
         return UIColor(hue: hue, saturation: s, brightness: b, alpha: 1.0)
     }
@@ -322,7 +322,7 @@ public extension Wallpaper {
         return placeRandomColorWithAlpha(1.0)
     }
     
-    public class func placeRandomColorWithAlpha(alpha: CGFloat) -> UIColor {
+    public class func placeRandomColorWithAlpha(_ alpha: CGFloat) -> UIColor {
         let r = randomPercentage()
         let g = randomPercentage()
         let b = randomPercentage()
@@ -339,7 +339,7 @@ public extension Wallpaper {
         return placeRandomGreyscaleColor(1.0)
     }
     
-    public class func placeRandomGreyscaleColor(alpha: CGFloat) -> UIColor {
+    public class func placeRandomGreyscaleColor(_ alpha: CGFloat) -> UIColor {
         let greyness = min(max(randomPercentage(), CGFloat(ColorAlphaLimit)), CGFloat((1.0 - ColorAlphaLimit)))
         return UIColor(white: greyness, alpha: alpha)
     }
@@ -357,30 +357,30 @@ public extension Wallpaper {
 }
 
 //MARK: - Private Random Number Helpers
-private extension Wallpaper {
+fileprivate extension Wallpaper {
     
-    private class func randomPhoneNumber() -> String {
+    class func randomPhoneNumber() -> String {
         return "(\(arc4random_uniform(000))) \(arc4random_uniform(999))-\(arc4random_uniform(9999))"
     }
     
-    private class func randomInteger(lessThan: UInt32) -> Int {
+    class func randomInteger(lessThan: UInt32) -> Int {
         return Int(arc4random_uniform(lessThan))
     }
     
-    private class func randomFloat(lessThan: UInt32) -> CGFloat {
+    class func randomFloat(lessThan: UInt32) -> CGFloat {
         return (CGFloat(arc4random_uniform(lessThan)) + randomPercentage())
     }
     
-    private class func randomFloat(range: NSRange) -> CGFloat {
+    class func randomFloat(in range: NSRange) -> CGFloat {
         
         return ((CGFloat(range.location) + CGFloat(arc4random_uniform(UInt32(range.length)))) + randomPercentage())
     }
     
-    private class func randomPercentage() -> CGFloat {
+    class func randomPercentage() -> CGFloat {
         return (CGFloat(arc4random_uniform(100)) / 100.0)
     }
     
-    private class func randomPercentage(range: NSRange) -> CGFloat {
+    class func randomPercentage(in range: NSRange) -> CGFloat {
         return ((CGFloat(range.location) + CGFloat(arc4random_uniform(UInt32(range.length)))) / 100.0)
     }
 }

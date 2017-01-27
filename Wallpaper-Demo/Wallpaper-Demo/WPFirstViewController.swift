@@ -16,12 +16,12 @@ enum ImageType : Int {
 
 class WPFirstViewController: UIViewController {
     
-    private let cellSizes: [CGSize]
+    fileprivate let cellSizes: [CGSize]
     
     var collectionView: UICollectionView
 
     init() {
-        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
         cellSizes = WPFirstViewController.initialCellSizes()
         
         super.init(nibName: nil, bundle: nil)
@@ -30,7 +30,7 @@ class WPFirstViewController: UIViewController {
         tabBarItem.image = UIImage(named: "First")
     }
     
-    private class func initialCellSizes() -> [CGSize] {
+    fileprivate class func initialCellSizes() -> [CGSize] {
         var cells: [CGSize] = Array()
         let range = NSMakeRange(35, 300)
         let end: Int = (range.location + Int(arc4random_uniform(UInt32(range.length))))
@@ -41,7 +41,7 @@ class WPFirstViewController: UIViewController {
             
             let heightRange = NSMakeRange(35, 300)
             let height = CGFloat((heightRange.location + Int(arc4random_uniform(UInt32(heightRange.length)))))
-            cells.append(CGSizeMake(width, height))
+            cells.append(CGSize(width: width, height: height))
         }
         return cells
     }
@@ -54,20 +54,20 @@ class WPFirstViewController: UIViewController {
         super.viewDidLoad()
         
         collectionView.frame = view.bounds
-        collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.backgroundColor = UIColor.white
         collectionView.delegate = self;
         collectionView.dataSource = self;
-        collectionView.registerClass(WPCollectionViewCell.self, forCellWithReuseIdentifier: firstCellReuseID)
+        collectionView.register(WPCollectionViewCell.self, forCellWithReuseIdentifier: firstCellReuseID)
 
         view.addSubview(collectionView)
     }
 
-    private func randomPlaceholderImageForCell(cell: WPCollectionViewCell) {
+    fileprivate func randomPlaceholderImage(for cell: WPCollectionViewCell) {
         let random = ImageType(rawValue: Int(arc4random_uniform(6)))!
         let size = cell.bounds.size
         let imageView = cell.imageView
         
-        let completion: (image: UIImage?) -> Void = { image in
+        let completion: (UIImage?) -> Void = { image in
             if let img = image {
                 if img.size == size {
                     imageView.image = image
@@ -77,43 +77,44 @@ class WPFirstViewController: UIViewController {
 
         switch (random) {
         case .Kittens:
-            Wallpaper.placeKittenImage(size, completion: completion)
+            Wallpaper.placeKittenImage(size: size, completion: completion)
         case .Placeholders:
-            Wallpaper.placeHolderImage(size, completion: completion)
+            Wallpaper.placeHolderImage(size: size, completion: completion)
         case .Bacon:
-            Wallpaper.placeBaconImage(size, completion: completion)
+            Wallpaper.placeBaconImage(size: size, completion: completion)
         case .GreyscaleKittens:
-            Wallpaper.placeKittenGreyscaleImage(size, completion: completion)
+            Wallpaper.placeKittenGreyscaleImage(size: size, completion: completion)
         case .Random:
-            Wallpaper.placeRandomImage(size, completion: completion)
+            Wallpaper.placeRandomImage(size: size, completion: completion)
         case .Downey:
-            Wallpaper.placeDowneyImage(size, completion: completion)
+            Wallpaper.placeDowneyImage(size: size, completion: completion)
         case .GreyscaleRandom:
-            Wallpaper.placeRandomGreyscaleImage(size, completion: completion)
+            Wallpaper.placeRandomGreyscaleImage(size: size, completion: completion)
         }
     }
 }
 
 extension WPFirstViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return cellSizes.count
     }
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(firstCellReuseID, forIndexPath: indexPath) as! WPCollectionViewCell
-
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let collectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: firstCellReuseID, for: indexPath)
         return collectionCell
     }
     
-    func collectionView(collectionView: UICollectionView, willDisplayCell cell: UICollectionViewCell, forItemAtIndexPath indexPath: NSIndexPath) {
-        randomPlaceholderImageForCell(cell as! WPCollectionViewCell);
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        randomPlaceholderImage(for: cell as! WPCollectionViewCell);
     }
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return cellSizes[indexPath.item]
     }
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 20.0, left: 10.0, bottom: 20.0, right: 10.0)
     }
 }
