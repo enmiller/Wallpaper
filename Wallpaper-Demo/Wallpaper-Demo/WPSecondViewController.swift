@@ -20,7 +20,7 @@ class WPSecondViewController: UIViewController {
     var collectionView: UICollectionView
     
     init() {
-        collectionView = UICollectionView(frame: CGRectZero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: UICollectionViewFlowLayout())
 
         super.init(nibName: nil, bundle: nil)
 
@@ -40,25 +40,25 @@ class WPSecondViewController: UIViewController {
         let edgeInsets = UIEdgeInsetsMake(20.0, 0.0, bottomInset, 0.0)
 
         collectionView.frame = view.bounds
-        collectionView.backgroundColor = UIColor.whiteColor()
+        collectionView.backgroundColor = UIColor.white
         collectionView.delegate = self;
         collectionView.dataSource = self;
-        collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: secondCellReuseID)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: secondCellReuseID)
         collectionView.contentInset = edgeInsets
 
         view.addSubview(collectionView)
     }
 
-    private func blueHueColorForCell(cell: UICollectionViewCell) {
+    fileprivate func blueHueColorForCell(cell: UICollectionViewCell) {
         let hue: CGFloat = 0.65
         cell.backgroundColor = Wallpaper.placeRandomColorWithHue(hue)
     }
 
-    private func randomColorForCell(cell: UICollectionViewCell) {
+    fileprivate func randomColorForCell(cell: UICollectionViewCell) {
         cell.backgroundColor = Wallpaper.placeRandomColor()
     }
 
-    private func randomColorAndAlphaForCell(cell: UICollectionViewCell) {
+    fileprivate func randomColorAndAlphaForCell(cell: UICollectionViewCell) {
         var alpha = CGFloat(arc4random_uniform(1000)) / CGFloat(1000)
         if alpha == 0.0 {
             alpha = 0.05
@@ -66,11 +66,11 @@ class WPSecondViewController: UIViewController {
         cell.backgroundColor = Wallpaper.placeRandomColorWithAlpha(alpha)
     }
 
-    private func randomGreyscaleColorForCell(cell:UICollectionViewCell) {
+    fileprivate func randomGreyscaleColorForCell(cell:UICollectionViewCell) {
         cell.backgroundColor = Wallpaper.placeRandomGreyscaleColor()
     }
 
-    private func randomGreyscaleColorAndAlphaForCell(cell: UICollectionViewCell) {
+    fileprivate func randomGreyscaleColorAndAlphaForCell(cell: UICollectionViewCell) {
         var alpha = CGFloat(arc4random_uniform(1000)) / CGFloat(1000)
         if alpha == 0.0 {
             alpha = 0.05
@@ -78,8 +78,8 @@ class WPSecondViewController: UIViewController {
         cell.backgroundColor = Wallpaper.placeRandomGreyscaleColor(alpha)
     }
 
-    private func randomColorWithHueOfGreenForCell(cell: UICollectionViewCell) {
-        cell.backgroundColor = Wallpaper.placeRandomColorWithHueOfColor(UIColor.greenColor())
+    fileprivate func randomColorWithHueOfGreenForCell(cell: UICollectionViewCell) {
+        cell.backgroundColor = Wallpaper.placeRandomColorWithHueOfColor(color: UIColor.green)
     }
 }
 
@@ -88,38 +88,38 @@ extension WPSecondViewController: UICollectionViewDelegate, UICollectionViewData
         return 6
     }
 
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 12
     }
 
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier(secondCellReuseID, forIndexPath: indexPath)
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let collectionCell = collectionView.dequeueReusableCell(withReuseIdentifier: secondCellReuseID, for: indexPath)
         
         let section = Section(rawValue: indexPath.section)!
         switch (section) {
         case .BlueHues:
-            blueHueColorForCell(collectionCell)
+            blueHueColorForCell(cell: collectionCell)
         case .RandomColors:
-            randomColorForCell(collectionCell)
+            randomColorForCell(cell: collectionCell)
         case .RandomAlphaColor:
-            randomColorAndAlphaForCell(collectionCell)
+            randomColorAndAlphaForCell(cell: collectionCell)
         case .RandomGreyscale:
-            randomGreyscaleColorForCell(collectionCell)
+            randomGreyscaleColorForCell(cell: collectionCell)
         case .RandomAlphaGreyscale:
-            randomColorWithHueOfGreenForCell(collectionCell)
+            randomColorWithHueOfGreenForCell(cell: collectionCell)
         case .RandomGreenHue:
-            randomGreyscaleColorAndAlphaForCell(collectionCell)
+            randomGreyscaleColorAndAlphaForCell(cell: collectionCell)
             
         }
         
         return collectionCell
     }
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
-        return CGSizeMake(40.0, 40.0)
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 40.0, height: 40.0)
     }
 
-    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAtIndex section: Int) -> UIEdgeInsets {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 20.0, left: 10.0, bottom: 60.0, right: 10.0)
     }
 }
