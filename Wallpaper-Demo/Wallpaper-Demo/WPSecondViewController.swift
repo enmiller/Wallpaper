@@ -84,7 +84,7 @@ class WPSecondViewController: UIViewController {
 }
 
 extension WPSecondViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 6
     }
 

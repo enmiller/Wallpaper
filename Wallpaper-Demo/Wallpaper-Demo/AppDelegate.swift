@@ -14,7 +14,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var tabBarController: UITabBarController?
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    func applicationDidFinishLaunching(_ application: UIApplication) {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         
         let firstVC = WPFirstViewController()
@@ -24,7 +24,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window!.rootViewController = tabBarController
         
         self.window!.makeKeyAndVisible()
-        return true
     }
 }
 
