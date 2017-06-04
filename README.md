@@ -1,6 +1,8 @@
 Wallpaper.swift
 =========
 
+![Swift](https://img.shields.io/badge/Swift%20-3.1-orange.svg)
+
 Building something? Building something and need content? Building something and need some fast content that will make your designer work _much_ faster?? Put up some Wallpaper! Quick placeholder images, text, and colors for your apps.
 
 Prefer the native Objective-C version? We've got you covered with [PlaceKit](http://github.com/larsacus/PlaceKit).
@@ -58,9 +60,6 @@ Wallpaper.placeHipsterIpsum(numberOfParagraphs: 3, shotOfLatin: true) { hipsterT
 
 ## Installation
 The Wallpaper core was built dependency-free to make it as easy as possible to drop into your project. Simply drop `Wallpaper.swift` and away you go!
-
-## Notes:
-* Now compiled for Swift 2
 
 ## License
 Standard MIT license
