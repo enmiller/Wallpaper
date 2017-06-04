@@ -1,12 +1,14 @@
 Wallpaper.swift
 =========
 
+![Swift](https://img.shields.io/badge/Swift%20-3.1-orange.svg)
+
 Building something? Building something and need content? Building something and need some fast content that will make your designer work _much_ faster?? Put up some Wallpaper! Quick placeholder images, text, and colors for your apps.
 
 Prefer the native Objective-C version? We've got you covered with [PlaceKit](http://github.com/larsacus/PlaceKit).
 
-##Content
-###Placeholders
+## Content
+### Placeholders
 
 _ProTip: Brisket and bacon wallpaper appear to have the greatest effect on that special visual designer in your life._
 
@@ -16,11 +18,11 @@ _ProTip: Brisket and bacon wallpaper appear to have the greatest effect on that 
   - Generic dimensioned placeholders from [placehold.it](http://placehold.it)
   - Gorgeous Robert Downey Jr. headshots from [http://rdjpg.com](http://rdjpg.com)
 
-###Text
+### Text
   - Hipster based text from [hipsteripsum.me](http://hipsteripsum.me)
   - Lorem Ipsum text/HTML/HTML URLs from [loripsum.net](http://loripsum.net)
 
-###Colors
+### Colors
 
 Sometimes you don't care or don't want to think about the color of something. Sometimes you just want to differentiate different views. Create new colors to give you bland UI some dimension, give new views a random color to tell them apart or generate a new random color matching the hue of another:
 
@@ -56,15 +58,8 @@ Wallpaper.placeHipsterIpsum(numberOfParagraphs: 3, shotOfLatin: true) { hipsterT
 }
 ````
 
-##Installation
+## Installation
 The Wallpaper core was built dependency-free to make it as easy as possible to drop into your project. Simply drop `Wallpaper.swift` and away you go!
 
-##Notes:
-* Now compiled for Swift 2
-
-##Known Issues
-
-1. Seriously? It's swift -- it's perfect.
-
-##License
+## License
 Standard MIT license
