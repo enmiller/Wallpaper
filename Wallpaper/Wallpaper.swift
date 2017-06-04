@@ -164,7 +164,7 @@ public class Wallpaper: NSObject {
                     completion(nil)
                 }
             } else {
-                print("\(#function) Wallpaper Error: \(error)")
+                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
                 completion(nil)
             }
         }
@@ -237,7 +237,7 @@ public extension Wallpaper {
                     completion(nil)
                 }
             } else {
-                print("\(#function) Wallpaper Error: \(error)")
+                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
                 completion(nil)
             }
         }
@@ -266,7 +266,7 @@ public extension Wallpaper {
                     }
                 }
             } else {
-                print("\(#function) Wallpaper Error: \(error)")
+                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
                 completion(nil)
             }
         }
@@ -284,7 +284,7 @@ public extension Wallpaper {
                     completion(nil)
                 }
             } else {
-                print("\(#function) Wallpaper Error: \(error)")
+                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
                 completion(nil)
             }
         }

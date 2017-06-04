@@ -106,9 +106,9 @@ extension WPSecondViewController: UICollectionViewDelegate, UICollectionViewData
         case .RandomGreyscale:
             randomGreyscaleColorForCell(cell: collectionCell)
         case .RandomAlphaGreyscale:
-            randomColorWithHueOfGreenForCell(cell: collectionCell)
-        case .RandomGreenHue:
             randomGreyscaleColorAndAlphaForCell(cell: collectionCell)
+        case .RandomGreenHue:
+            randomColorWithHueOfGreenForCell(cell: collectionCell)
             
         }
         
