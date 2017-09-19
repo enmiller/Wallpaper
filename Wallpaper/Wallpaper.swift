@@ -151,23 +151,32 @@ public class Wallpaper: NSObject {
     
     fileprivate class func requestImage(at path: String, size: CGSize, completion: @escaping (UIImage?) -> (Void)) {
         let screenScale: CGFloat = UIScreen.main.scale
-        
         let urlString = String(format: path, "\(Int(size.width * screenScale))", "\(Int(size.height * screenScale))")
-        let url = URL(string: urlString)
-        let request = URLRequest(url: url!)
-        NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue.main) { (response, data, error) -> Void in
-            if error == nil {
-                if let unwrappedData = data {
-                    let image = UIImage(data: unwrappedData, scale: screenScale)
-                    completion(image)
-                } else {
+        let url = URL(string: urlString)!
+
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard error == nil else {
+                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
+                DispatchQueue.main.async {
                     completion(nil)
                 }
-            } else {
-                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
-                completion(nil)
+                return
+            }
+
+            guard let data = data else {
+                print(String(format:"%@ %@", #function, "Wallpaper missing response data"))
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+
+            DispatchQueue.main.async {
+                let image = UIImage(data: data, scale: screenScale)
+                completion(image)
             }
         }
+        task.resume()
     }
 }
 
@@ -220,27 +229,37 @@ public extension Wallpaper {
     public class func placeText(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, textOptions: WPTextOptions, completion: @escaping (String?) -> (Void)) {
         assert(numberOfParagraphs > 0, "Number of paragraphs is invalid")
         
-        var urlString: String = kWPPlaceRandomTextURLString.appending(textOptions.toMaskString())
-        urlString = (urlString as NSString).appendingPathComponent("plaintext")
-        urlString = (urlString as NSString).appendingPathComponent(paragraphLength.rawValue)
-        
+        let urlString: String = kWPPlaceRandomTextURLString.appending(textOptions.toMaskString())
         let paragraphArgs = "\(numberOfParagraphs)"
-        urlString = (urlString as NSString).appendingPathComponent(paragraphArgs)
-        let url = URL(string: urlString as String)
-        let request = URLRequest(url: url!)
-        NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue.main) { (response, data, error) -> Void in
-            if error == nil {
-                if let unwrappedData = data {
-                    let returnString = String(data: unwrappedData, encoding: .utf8)
-                    completion(returnString)
-                } else {
+
+        var url = URL(string: urlString)!
+        url.appendPathComponent("plaintext")
+        url.appendPathComponent(paragraphLength.rawValue)
+        url.appendPathComponent(paragraphArgs)
+
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard error == nil else {
+                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
+                DispatchQueue.main.async {
                     completion(nil)
                 }
-            } else {
-                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
-                completion(nil)
+                return
+            }
+
+            guard let data = data else {
+                print(String(format:"%@ %@", #function, "Wallpaper missing response data"))
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+
+            DispatchQueue.main.async {
+                let returnString = String(data: data, encoding: .utf8)
+                completion(returnString)
             }
         }
+        task.resume()
     }
     
     public class func placeHipsterIpsum(numberOfParagraphs: Int, shotOfLatin: Bool, completion: @escaping (String?) -> (Void)) {
@@ -250,44 +269,66 @@ public extension Wallpaper {
         } else {
             hipsterPath += "&type=hipster-centric"
         }
-        
-        let url = URL(string: hipsterPath)
-        let request = URLRequest(url: url!)
-        NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue.main) { (response, data, error) -> Void in
-            if error == nil {
-                if let unwrappedData = data {
-                    if let JSONDict = try? JSONSerialization.jsonObject(with: unwrappedData, options: []),
-                        let dict = JSONDict as? [String : AnyObject]
-                    {
-                        let returnString = dict["text"] as? String
-                        completion(returnString)
-                    } else {
-                        completion(nil)
-                    }
+
+        let url = URL(string: hipsterPath)!
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard error == nil else {
+                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+
+            guard let data = data else {
+                print(String(format:"%@ %@", #function, "Wallpaper missing response data"))
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+
+            if let JSONDict = try? JSONSerialization.jsonObject(with: data, options: []),
+                let dict = JSONDict as? [String : AnyObject] {
+                DispatchQueue.main.async {
+                    let returnString = dict["text"] as? String
+                    completion(returnString)
                 }
             } else {
-                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
-                completion(nil)
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
             }
         }
+        task.resume()
     }
     
     public class func placeHTML(numberOfParagraphs: Int, paragraphLength: WPTextParagraphLength, options: WPHTMLOptions, completion: @escaping (String?) -> (Void)) -> () {
-        let htmlURL = placeURLForHTML(paragraphLength: paragraphLength, htmlOptions: options)
-        let request = URLRequest(url: htmlURL)
-        NSURLConnection.sendAsynchronousRequest(request, queue: OperationQueue.main) { (response, data, error) -> Void in
-            if error == nil {
-                if let unwrappedData = data {
-                    let returnString = String(data: unwrappedData, encoding: .utf8)
-                    completion(returnString)
-                } else {
+        let url = placeURLForHTML(paragraphLength: paragraphLength, htmlOptions: options)
+
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard error == nil else {
+                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
+                DispatchQueue.main.async {
                     completion(nil)
                 }
-            } else {
-                print(String(format:"%@ %@ %@", #function, "Wallpaper Error:", String(describing: error)))
-                completion(nil)
+                return
+            }
+
+            guard let data = data else {
+                print(String(format:"%@ %@", #function, "Wallpaper missing response data"))
+                DispatchQueue.main.async {
+                    completion(nil)
+                }
+                return
+            }
+
+            DispatchQueue.main.async {
+                let returnString = String(data: data, encoding: .utf8)
+                completion(returnString)
             }
         }
+        task.resume()
     }
     
     public class func placeURLForHTML(paragraphLength: WPTextParagraphLength, htmlOptions: WPHTMLOptions) -> URL {
