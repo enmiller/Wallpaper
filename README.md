@@ -1,7 +1,8 @@
 Wallpaper.swift
 =========
 
-![Swift](https://img.shields.io/badge/Swift%20-3.1-orange.svg)
+[![Swift](https://img.shields.io/badge/Swift-4.0-orange.svg?style=flat-square)]()
+
 
 Building something? Building something and need content? Building something and need some fast content that will make your designer work _much_ faster?? Put up some Wallpaper! Quick placeholder images, text, and colors for your apps.
 
