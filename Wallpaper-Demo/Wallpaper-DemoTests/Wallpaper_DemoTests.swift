@@ -185,7 +185,7 @@ class Wallpaper_ColorTests: XCTestCase {
         
         var resultingHue: CGFloat = 0.0
         color.getHue(&resultingHue, saturation: nil, brightness: nil, alpha: nil)
-        XCTAssertEqualWithAccuracy(resultingHue, huePercentage, accuracy: 0.001, "Resulting hue was not the same as the input hue!");
+        XCTAssertEqual(resultingHue, huePercentage, accuracy: 0.001, "Resulting hue was not the same as the input hue!");
     }
     
     func testRandomColorReturnsColor() {
@@ -206,7 +206,7 @@ class Wallpaper_ColorTests: XCTestCase {
         var resultingAlpha: CGFloat = 0.0
         color.getWhite(nil, alpha: &resultingAlpha)
         
-        XCTAssertEqualWithAccuracy(alpha, resultingAlpha, accuracy: 0.0001, "Alpha values were not equal!")
+        XCTAssertEqual(alpha, resultingAlpha, accuracy: 0.0001, "Alpha values were not equal!")
     }
     
 //    func testRandomGreyscaleColorHasGreyscaleColorSpace() {
@@ -222,6 +222,6 @@ class Wallpaper_ColorTests: XCTestCase {
         var resultingAlpha: CGFloat = 0.0
         color.getWhite(nil, alpha: &resultingAlpha)
         
-        XCTAssertEqualWithAccuracy(alpha, resultingAlpha, accuracy: 0.0001, "Alpha values were not equal!")
+        XCTAssertEqual(alpha, resultingAlpha, accuracy: 0.0001, "Alpha values were not equal!")
     }
 }
